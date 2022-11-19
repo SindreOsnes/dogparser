@@ -42,6 +42,7 @@ def parse(source_definition: str, destination_folder: str):
 
     print(schema_split)
     print(columns)
+    print(schema_split[0])
 
 def extract_enum(elements: List[bytes], query_term: bytes) -> Tuple[List[str], List[bytes]]:
     query_idx = elements.index(query_term)
