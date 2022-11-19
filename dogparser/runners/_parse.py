@@ -9,4 +9,14 @@ def parse():
 
     args = argument_parser.parse_args()
 
+    # Validate the inputs
+    if args.TABLE not in ['HUNDER']:
+        raise AssertionError(f'Table {args.TABLE} is not valid')
+
+    if not os.path.exists(args.SOURCE_FILE):
+        raise FileNotFoundError('The source file must be a valid file.')
+    
+    # Create the target folders
+    os.makedirs(os.path.join(args.DESTINATION_FOLDER, args.TABLE), exist_ok=true)
+
     print('Hello World')
