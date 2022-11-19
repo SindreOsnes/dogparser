@@ -33,6 +33,7 @@ def parse(source_definition: str, destination_folder: str):
         ,(b'K\x8fRET', 'K.json') # K
         ,(b'ZB', 'ZB.json') # ZB
         ,(b'KKL', 'KKL.json') # KKL
+        ,(b'BRUKS', 'BRUKS.json') # BRUKS
     ]
 
     for target, file in enums:
