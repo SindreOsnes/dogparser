@@ -14,9 +14,9 @@ def parse():
         raise AssertionError(f'Table {args.TABLE} is not valid')
 
     if not os.path.exists(args.SOURCE_FILE+'.DBM'):
-        raise FileNotFoundError('The source file must be a valid file.')
+        raise FileNotFoundError(f'The source file, {args.SOURCE_FILE}, must be a valid file.')
     
     # Create the target folders
-    os.makedirs(os.path.join(args.DESTINATION_FOLDER, args.TABLE), exist_ok=true)
+    os.makedirs(os.path.join(args.DESTINATION_FOLDER, args.TABLE), exist_ok=True)
 
     print('Hello World')
