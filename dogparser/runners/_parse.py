@@ -13,7 +13,7 @@ def parse():
     if args.TABLE not in ['HUNDER']:
         raise AssertionError(f'Table {args.TABLE} is not valid')
 
-    if not os.path.exists(args.SOURCE_FILE):
+    if not os.path.exists(args.SOURCE_FILE+'.DBM'):
         raise FileNotFoundError('The source file must be a valid file.')
     
     # Create the target folders
