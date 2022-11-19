@@ -11,10 +11,9 @@ def parse(source_definition: str, destination_folder: str):
         schema_data = f.read()
     
     # Strip the extraneous data and split into elements
-    stripped_schema_data = schema_data[schema_data.index(b'REG.NR')-5:]
+    stripped_schema_data = schema_data[schema_data.index(b'REG.NR')-1:]
     schema_split = stripped_schema_data.split(b'\x00')
-    idx_head = [i for i, val in enumerate(schema_split) if b'REG.NR' in val][0]
-    columns, _ = extract_enum(schema_split, schema_split[idx_head-1])
+    columns, _ = extract_values(schema_split, 0, schema_data[schema_data.index(b'REG.NR')-1])
     print(columns)
 
 
@@ -30,7 +29,6 @@ def parse(source_definition: str, destination_folder: str):
         ,(b'UTD', 'UTD.json') # UTD
         ,(b'UTD2', 'UTD2.json') # UTD2
         ,(b'UTMER', 'UTMER.json') # UTMER
-        ,(b'VIN', 'VIN.json') # VIN
         ,(b'VIN', 'VIN.json') # VIN
     ]
 
@@ -50,12 +48,18 @@ def extract_enum(elements: List[bytes], query_term: bytes) -> Tuple[List[str], L
     
     print(f'{query_term} contains {query_len+1} entries including leading NULL')
 
-    query = elements[query_idx+1:query_idx+query_len+1]
+    enum, return_elements = extract_values(elements, query_idx+1, query_len)
+    enum = [''] + enum
+
+    return enum, return_elements
+
+def extract_values(elements: List[bytes], idx: int, count: int)  -> Tuple[List[str], List[bytes]]:
+    query = elements[idx:idx+count]
     query[0] = query[0][1:]
 
-    enum = [''] + [graceful_conversion(x) for x in query]
+    enum = [graceful_conversion(x) for x in query]
 
-    return enum, elements[query_idx+query_len+1:]
+    return enum, elements[idx+count:]
 
 def graceful_conversion(input_element: bytes) -> str:
     data_out = input_element
