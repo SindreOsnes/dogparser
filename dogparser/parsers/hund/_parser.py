@@ -20,6 +20,7 @@ def parse(source_definition: str, destination_folder: str):
         ,(b'HD', 'HD.json') # HD
         ,(b'AD', 'AD.json') # AD
         ,(b'HEM', 'HEM.json') # HEM
+        ,(b'UTD', 'UTD.json') # UTD
     ]
 
     for target, file in enums:
