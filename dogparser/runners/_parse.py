@@ -7,4 +7,6 @@ def parse():
     argument_parser.add_argument('SOURCE_FILE', help='The dataease file to parse')
     argument_parser.add_argument('DESTINATION_FOLDER', help='The destination directory')
 
+    args = argument_parser.parse_args()
+
     print('Hello World')
