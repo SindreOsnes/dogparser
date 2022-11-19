@@ -14,11 +14,17 @@ def parse(source_definition: str, destination_folder: str):
     stripped_schema_data = schema_data[schema_data.index(b'nei\x00ja'):]
     schema_split = stripped_schema_data.split(b'\x00')
 
-    # Get the country enumerator
-    land_enum, schema_split = extract_enum(schema_split, b'LAND')
+    enums = [
+        (b'LAND', 'LAND.json'), # Country
+        (b'kj\x9bnn', 'KJONN.json') # Sex
+    ]
 
-    with open(os.path.join(destination_folder, 'LAND.json'), 'w') as f:
-        json.dump(land_enum, f, ensure_ascii=False, indent=True)
+    for target, file in enums:
+        # Get the enumerator
+        enum, schema_split = extract_enum(schema_split, target)
+
+        with open(os.path.join(destination_folder, file), 'w') as f:
+            json.dump(enum, f, ensure_ascii=False, indent=True)
 
     print(schema_split)
 
