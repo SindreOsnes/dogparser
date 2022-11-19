@@ -50,6 +50,8 @@ def graceful_conversion(input_element: bytes) -> str:
 
 def sure_conversion(input_element: bytes) -> bytes:
     data_out = input_element
-    data_out = data_out.replace(b'\x9b', b'\xc3\xb8') # ø HUNDER HD(Død)
+    data_out = data_out.replace(b'\x92', b'\xc3\x86') # Æ | HUNDER HEM(BÆRER)
+    data_out = data_out.replace(b'\x9b', b'\xc3\xb8') # ø | HUNDER HD(Død)
+    
     return data_out
 
