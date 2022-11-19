@@ -11,6 +11,13 @@ def parse(source_definition: str, destination_folder: str):
         schema_data = f.read()
     
     # Strip the extraneous data and split into elements
+    stripped_schema_data = schema_data[schema_data.index(b'REG.NR')-5:]
+    schema_split = stripped_schema_data.split(b'\x00')
+    idx_head = [i for i, val in enumerate(schema_split) if b'REG.NR' in val][0]
+    columns, _ = extract_enum(schema_split, schema_split[idx_head-1])
+    print(columns)
+
+
     stripped_schema_data = schema_data[schema_data.index(b'nei\x00ja'):]
     schema_split = stripped_schema_data.split(b'\x00')
 
@@ -24,6 +31,7 @@ def parse(source_definition: str, destination_folder: str):
         ,(b'UTD2', 'UTD2.json') # UTD2
         ,(b'UTMER', 'UTMER.json') # UTMER
         ,(b'VIN', 'VIN.json') # VIN
+        ,(b'VIN', 'VIN.json') # VIN
     ]
 
     for target, file in enums:
@@ -34,6 +42,7 @@ def parse(source_definition: str, destination_folder: str):
             json.dump(enum, f, ensure_ascii=False, indent=True)
 
     print(schema_split)
+    print(columns)
 
 def extract_enum(elements: List[bytes], query_term: bytes) -> Tuple[List[str], List[bytes]]:
     query_idx = elements.index(query_term)
