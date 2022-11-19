@@ -38,6 +38,7 @@ def extract_enum(elements: List[bytes], query_term: bytes) -> Tuple[List[str], L
     print(f'{query_term} contains {query_len+1} entries including leading NULL')
 
     query = elements[query_idx+1:query_idx+query_len+1]
+    query[0] = query[0][1:]
 
     enum = [''] + [graceful_conversion(x) for x in query]
 
