@@ -43,4 +43,11 @@ def extract_enum(elements: List[bytes], query_term: bytes) -> Tuple[List[str], L
 
 def graceful_conversion(input_element: bytes) -> str:
     data_out = input_element
+    data_out = sure_conversion(data_out)
     return data_out.decode('utf8')
+
+def sure_conversion(input_element: bytes) -> bytes:
+    data_out = input_element
+    data_out = data_out.replace(b'\x9b', b'\xc3\xb8') # ø HUNDER HD(Død)
+    return data_out
+
