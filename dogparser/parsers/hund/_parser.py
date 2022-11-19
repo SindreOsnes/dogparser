@@ -31,7 +31,8 @@ def parse(source_definition: str, destination_folder: str):
         ,(b'UTMER', 'UTMER.json') # UTMER
         ,(b'VIN', 'VIN.json') # VIN
         ,(b'K\x8fRET', 'K.json') # K
-        ,(b'ZB', 'ZB.json') # K
+        ,(b'ZB', 'ZB.json') # ZB
+        ,(b'KKL', 'KKL.json') # KKL
     ]
 
     for target, file in enums:
