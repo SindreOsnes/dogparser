@@ -15,9 +15,9 @@ def parse(source_definition: str, destination_folder: str):
     schema_split = stripped_schema_data.split(b'\x00')
 
     enums = [
-        (b'LAND', 'LAND.json'), # Country
-        (b'kj\x9bnn', 'KJONN.json') # Sex
-        (b'HD', 'HD.json') # Sex
+        (b'LAND', 'LAND.json') # Country
+        ,(b'kj\x9bnn', 'KJONN.json') # Sex
+        ,(b'HD', 'HD.json') # Sex
     ]
 
     for target, file in enums:
