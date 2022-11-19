@@ -17,7 +17,8 @@ def parse(source_definition: str, destination_folder: str):
     enums = [
         (b'LAND', 'LAND.json') # Country
         ,(b'kj\x9bnn', 'KJONN.json') # Sex
-        ,(b'HD', 'HD.json') # Sex
+        ,(b'HD', 'HD.json') # HD
+        ,(b'AD', 'AD.json') # AD
     ]
 
     for target, file in enums:
