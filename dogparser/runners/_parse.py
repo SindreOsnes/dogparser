@@ -1,5 +1,7 @@
 import argparse
 import os
+from dogparser.parsers import hund
+
 
 def parse():
     argument_parser = argparse.ArgumentParser(description='CLI interface for parsing DataEase files')
@@ -18,5 +20,8 @@ def parse():
     
     # Create the target folders
     os.makedirs(os.path.join(args.DESTINATION_FOLDER, args.TABLE), exist_ok=True)
+
+    if args.TABLE == 'HUNDER':
+        hund.parse(args.SOURCE_FILE, os.path.join(args.DESTINATION_FOLDER, args.TABLE))
 
     print('Hello World')
