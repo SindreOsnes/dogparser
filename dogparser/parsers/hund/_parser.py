@@ -1,12 +1,26 @@
 import json
 import os
 
+from ._hund import Hund
 from ...utils import extract_enum, extract_values
 
 def parse(source_definition: str, destination_folder: str):
     
     # Parse the schem
     parse_schema(source_definition=source_definition, destination_folder=destination_folder)
+    
+    # Read the data
+    data_file = source_definition + '.DBM'
+
+    hund_list = []
+
+    with open(data_file, 'rb') as f:
+        data = f.read(250)
+        hund = Hund.from_bytes(data)
+
+        hund_str = json.dumps(hund)
+        print(hund_str)
+
 
 def parse_schema(source_definition: str, destination_folder: str):
     
