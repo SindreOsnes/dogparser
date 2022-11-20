@@ -8,10 +8,14 @@ class Hund:
 
     _fodt: Union[date, None] # Birthdate (FØDT in original schema)
     _fodt_raw: Union[date, None] # Birthdate raw value (FØDT in original schema)
+    _fd_land_id: int # Birth country
+    _kjonn_id: int # Sex
 
-    def __init__(self, reg_nr: str, fodt: Union[date, None] = None, fodt_raw: Union[str, None] = None) -> None:
+    def __init__(self, reg_nr: str, fd_land_id: int, kjonn_id: int, fodt: Union[date, None] = None, fodt_raw: Union[str, None] = None) -> None:
         self._reg_nr = reg_nr
         self._fodt = fodt
+        self._fd_land_id = fd_land_id
+        self._kjonn_id = kjonn_id
         self._fodt_raw = fodt_raw
     
     @classmethod
@@ -34,12 +38,28 @@ class Hund:
             fodt = date_conversion(sub_content[:6]) # FØDT (birthdate/født is represented by a 6 digit numerical string)
         except ValueError as e:
             print(e)
+        
+        # Eliminate the already used data and set the next property
+        sub_content = sub_content[6:] # 222 bytes remaining
+        fd_land_id = sub_content[0]
+        
+        # Eliminate the already used data and set the next property
+        sub_content = sub_content[1:] # 221 bytes remaining
+        kjonn_id = sub_content[0]
 
-        return cls(reg_nr=reg_nr, fodt=fodt, fodt_raw=fodt_raw)
+        return cls(reg_nr=reg_nr, fodt=fodt, fodt_raw=fodt_raw, fd_land_id=fd_land_id, kjonn_id=kjonn_id)
     
     @property
     def reg_nr(self) -> str:
         return self._reg_nr
+    
+    @property
+    def fd_land_id(self) -> int:
+        return self._fd_land_id
+    
+    @property
+    def kjonn_id(self) -> int:
+        return self._kjonn_id
     
     @property
     def fodt(self) -> Union[date, None]:
@@ -57,7 +77,7 @@ class Hund:
     def native(self) -> dict:
         """Method converts class instance to native python classes for serialization purposes"""
 
-        return {'reg_nr': self.reg_nr, 'fodt': self.fodt_str, 'fodt_raw': self.fodt_raw}
+        return {'reg_nr': self.reg_nr, 'fodt': self.fodt_str, 'fodt_raw': self.fodt_raw, 'fd_land_id': self._fd_land_id, 'kjonn_id': self.kjonn_id}
 
 class HundList:
 
