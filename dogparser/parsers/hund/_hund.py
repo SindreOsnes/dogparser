@@ -9,6 +9,7 @@ class Hund:
     _fodt: Union[date, None] # Birthdate (FØDT in original schema)
     _fodt_raw: Union[date, None] # Birthdate raw value (FØDT in original schema)
     _kullnr: Union[str, None] # Litter identifier (KULLNR in original schema)
+    _kennel: Union[str, None] # Kennel name (KENNEL in original schema)
 
     # Enum ids
     _fd_land_id: int # Birth country (FD-LAND in original schema)
@@ -18,16 +19,18 @@ class Hund:
 
     def __init__(self, reg_nr: str, navn: str, fd_land_id: int, kjonn_id: int,
                  hd_id: int, ad_id: int,
-                 fodt: Union[date, None] = None, fodt_raw: Union[str, None] = None, kullnr: Union[str, None] = None) -> None:
+                 fodt: Union[date, None] = None, fodt_raw: Union[str, None] = None, kullnr: Union[str, None] = None,
+                 kennel: Union[str, None] = None) -> None:
         self._reg_nr = reg_nr
         self._navn = navn
         self._fodt = fodt
+        self._fodt_raw = fodt_raw
         self._fd_land_id = fd_land_id
         self._kjonn_id = kjonn_id
         self._kullnr = kullnr
         self._hd_id = hd_id
         self._ad_id = ad_id
-        self._fodt_raw = fodt_raw
+        self._kennel = kennel
     
     @classmethod
     def from_bytes(cls, content: bytes):
@@ -125,6 +128,10 @@ class Hund:
     @property
     def fodt_raw(self) -> Union[str, None]:
         return self._fodt_raw
+    
+    @property
+    def kennel(self) -> Union[str, None]:
+        return None if not self._kennel else self._kennel
 
     @property
     def native(self) -> dict:
@@ -139,7 +146,8 @@ class Hund:
             'kjonn_id': self.kjonn_id,
             'kullnr': self.kullnr,
             'hd_id': self.hd_id,
-            'ad_id': self.ad_id
+            'ad_id': self.ad_id,
+            'kennel': self.kennel
             }
 
 class HundList:
