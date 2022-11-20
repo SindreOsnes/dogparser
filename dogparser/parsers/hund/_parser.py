@@ -1,7 +1,7 @@
 import json
 import os
 
-from ._hund import Hund
+from ._hund import Hund, HundList
 from ...utils import extract_enum, extract_values
 
 def parse(source_definition: str, destination_folder: str):
@@ -14,11 +14,15 @@ def parse(source_definition: str, destination_folder: str):
 
     hund_list = []
 
+    element_len = 250
+
     with open(data_file, 'rb') as f:
-        data = f.read(250)
+        data = f.read(element_len)
         hund = Hund.from_bytes(data)
 
-        hund_str = json.dumps(hund.native)
+        hund_list.append(hund)
+
+        hund_str = json.dumps(HundList(hund_list).native)
         print(hund_str)
 
 

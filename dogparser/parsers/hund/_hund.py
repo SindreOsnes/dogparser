@@ -1,4 +1,4 @@
-from typing import Union
+from typing import List, Union
 
 from ...utils import graceful_conversion
 
@@ -30,3 +30,17 @@ class Hund:
         """Method converts class instance to native python classes for serialization purposes"""
 
         return {'reg_nr': self.reg_nr}
+
+
+class HundList:
+
+    _contents: List[Hund]
+
+    def __init__(self, contents:List[Hund]=[]) -> None:
+        self._contents = contents
+    
+    @property
+    def native(self) -> dict:
+        """Method converts class instance to native python classes for serialization purposes"""
+
+        return [i.native for i in self._contents]
