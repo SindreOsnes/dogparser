@@ -4,17 +4,18 @@ from datetime import date
 from ...utils import graceful_conversion, date_conversion
 
 class Hund:
-    _reg_nr: str
-
+    _reg_nr: str # Registration number (REG.NR in original schema)
+    _navn: str # Name (NAVN in original schema)
     _fodt: Union[date, None] # Birthdate (FØDT in original schema)
     _fodt_raw: Union[date, None] # Birthdate raw value (FØDT in original schema)
-    _fd_land_id: int # Birth country
-    _kjonn_id: int # Sex
-    _kullnr: Union[str, None] # Litter identifier
+    _fd_land_id: int # Birth country (FD-LAND in original schema)
+    _kjonn_id: int # Sex (KJØNN in original schema)
+    _kullnr: Union[str, None] # Litter identifier (KULLNR in original schema)
 
-    def __init__(self, reg_nr: str, fd_land_id: int, kjonn_id: int,
+    def __init__(self, reg_nr: str, navn: str, fd_land_id: int, kjonn_id: int,
                  fodt: Union[date, None] = None, fodt_raw: Union[str, None] = None, kullnr: Union[str, None] = None) -> None:
         self._reg_nr = reg_nr
+        self._navn = navn
         self._fodt = fodt
         self._fd_land_id = fd_land_id
         self._kjonn_id = kjonn_id
@@ -53,12 +54,20 @@ class Hund:
         # Eliminate the already used data and set the next property
         sub_content = sub_content[1:] # 220 bytes remaining
         kullnr = graceful_conversion(sub_content[:5]) # KULLNR (litter number/identifier is a string capped at 5 characters)
+        
+        # Eliminate the already used data and set the next property
+        sub_content = sub_content[5:] # 215 bytes remaining
+        navn = graceful_conversion(sub_content[:38]) # NAVN (name of dog is a string capped at 38 characters)
 
-        return cls(reg_nr=reg_nr, fodt=fodt, fodt_raw=fodt_raw, fd_land_id=fd_land_id, kjonn_id=kjonn_id, kullnr=kullnr)
+        return cls(reg_nr=reg_nr, fodt=fodt, fodt_raw=fodt_raw, fd_land_id=fd_land_id, kjonn_id=kjonn_id, kullnr=kullnr, navn=navn)
     
     @property
     def reg_nr(self) -> str:
         return self._reg_nr
+    
+    @property
+    def navn(self) -> str:
+        return self._navn
     
     @property
     def fd_land_id(self) -> int:
@@ -90,6 +99,7 @@ class Hund:
 
         return {
             'reg_nr': self.reg_nr,
+            'navn': self.navn,
             'fodt': self.fodt_str,
             'fodt_raw': self.fodt_raw,
             'fd_land_id': self._fd_land_id,
