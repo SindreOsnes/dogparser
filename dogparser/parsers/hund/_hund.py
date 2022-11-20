@@ -20,3 +20,13 @@ class Hund:
         reg_nr = graceful_conversion(sub_content[:12]) # REG.NR (registration number is a string capped at 12 character)
 
         return cls(reg_nr=reg_nr)
+    
+    @property
+    def reg_nr(self) -> str:
+        return self._reg_nr
+
+    @property
+    def native(self) -> dict:
+        """Method converts class instance to native python classes for serialization purposes"""
+
+        return {'reg_nr': self.reg_nr}

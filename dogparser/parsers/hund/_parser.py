@@ -18,7 +18,7 @@ def parse(source_definition: str, destination_folder: str):
         data = f.read(250)
         hund = Hund.from_bytes(data)
 
-        hund_str = json.dumps(hund)
+        hund_str = json.dumps(hund.native)
         print(hund_str)
 
 
