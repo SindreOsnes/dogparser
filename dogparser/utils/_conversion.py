@@ -18,9 +18,9 @@ def sure_conversion(input_element: bytes) -> bytes:
 def uncertain_conversions(input_element: bytes) -> bytes:
 
     data_out = input_element
-    data_out = data_out.replace(b'\x8e', b'?x8e')
-    data_out = data_out.replace(b'\x8f', b'?x8f')
-    data_out = data_out.replace(b'\x99', b'?x99')
-    data_out = data_out.replace(b'\x9a', b'?x9a')
+    data_out = data_out.replace(b'\x8e', b'?x8e') # HUNDER (reg_nr: S138B?x8e/72, value(reg_nr): S138B?x8e/72)
+    data_out = data_out.replace(b'\x8f', b'?x8f') # HUNDER (reg_nr: SBR?x8fFLI, value(reg_nr): SBR?x8fFLI)
+    data_out = data_out.replace(b'\x99', b'?x99') # HUNDER (reg_nr: NKKR3214?x99, value(reg_nr): NKKR3214?x99)
+    data_out = data_out.replace(b'\x9a', b'?x9a') # HUNDER (reg_nr: SZNIXL?x9aF, value(reg_nr): SZNIXL?x9aF)
     
     return data_out
