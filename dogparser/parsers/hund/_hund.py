@@ -12,6 +12,9 @@ class Hund:
     _kennel: Union[str, None] # Kennel name (KENNEL in original schema)
     _farge: Union[str, None] # Color (FARGE in original schema)
 
+    _farens_reg_nr: str # Fathers registration number (FARENS REG.NR in original schema)
+    _far: str #Fathers name (FAR in original schema)
+
     # Enum ids
     _fd_land_id: int # Birth country (FD-LAND in original schema)
     _kjonn_id: int # Sex (KJØNN in original schema)
@@ -44,7 +47,8 @@ class Hund:
                  bruks3_id: int, bruks4_id: int, prem_id: int,
                  kval_id: int, kval2_id: int, test_id: int, test2_id: int,
                  fodt: Union[date, None] = None, fodt_raw: Union[str, None] = None, kullnr: Union[str, None] = None,
-                 kennel: Union[str, None] = None, farge: Union[str, None] = None,) -> None:
+                 kennel: Union[str, None] = None, farge: Union[str, None] = None,
+                 farens_reg_nr: Union[str, None] = None, far: Union[str, None] = None,) -> None:
         self._reg_nr = reg_nr
         self._navn = navn
         self._fodt = fodt
@@ -74,6 +78,8 @@ class Hund:
         self._kval2_id = kval2_id
         self._test_id = test_id
         self._test2_id = test2_id
+        self._farens_reg_nr = farens_reg_nr
+        self._far = test2_id = far
     
     @classmethod
     def from_bytes(cls, content: bytes):
@@ -200,6 +206,14 @@ class Hund:
         sub_content = sub_content[1:] # 116 bytes remaining
         test2_id = sub_content[0] # TEST2 index
 
+        # Eliminate the already used data and set the next property (134-149 unused)
+        sub_content = content[150:] # 100 bytes remaining
+        farens_reg_nr = graceful_conversion(sub_content[:12]) # FARENS REG.NR (registration number is a string capped at 12 characters)
+
+        # Eliminate the already used data and set the next property
+        sub_content = sub_content[12:] # 88 bytes remaining
+        far = graceful_conversion(sub_content[:38]) # FAR (name of father is a string capped at 38 characters)
+
         return cls(
             reg_nr=reg_nr,
             fodt=fodt,
@@ -230,6 +244,8 @@ class Hund:
             kval2_id=kval2_id,
             test_id=test_id,
             test2_id=test2_id,
+            farens_reg_nr=farens_reg_nr,
+            far=far,
             )
     
     @property
@@ -351,6 +367,14 @@ class Hund:
     @property
     def test2_id(self) -> int:
         return self._test2_id
+    
+    @property
+    def farens_reg_nr(self) -> Union[str, None]:
+        return None if not self._farens_reg_nr else self._farens_reg_nr
+    
+    @property
+    def far(self) -> Union[str, None]:
+        return None if not self._far else self._far
 
     @property
     def native(self) -> dict:
@@ -374,18 +398,20 @@ class Hund:
             'utd3_id':  self.utd3_id,
             'utmer_id':  self.utmer_id,
             'vin_id':  self.vin_id,
-            'k_id':  self._k_id,
-            'zb_id':  self._zb_id,
-            'kkl_id':  self._kkl_id,
-            'bruks_id':  self._bruks_id,
-            'bruks2_id':  self._bruks2_id,
-            'bruks3_id':  self._bruks3_id,
-            'bruks4_id':  self._bruks4_id,
-            'prem_id':  self._prem_id,
-            'kval_id':  self._kval_id,
-            'kval2_id':  self._kval2_id,
-            'test_id':  self._test_id,
-            'test2_id':  self._test2_id,
+            'k_id':  self.k_id,
+            'zb_id':  self.zb_id,
+            'kkl_id':  self.kkl_id,
+            'bruks_id':  self.bruks_id,
+            'bruks2_id':  self.bruks2_id,
+            'bruks3_id':  self.bruks3_id,
+            'bruks4_id':  self.bruks4_id,
+            'prem_id':  self.prem_id,
+            'kval_id':  self.kval_id,
+            'kval2_id':  self.kval2_id,
+            'test_id':  self.test_id,
+            'test2_id':  self.test2_id,
+            'farens_reg_nr': self.farens_reg_nr,
+            'far': self.far,
         }
 
         return obj_dict
