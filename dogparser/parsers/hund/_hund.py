@@ -8,11 +8,16 @@ class Hund:
     _navn: str # Name (NAVN in original schema)
     _fodt: Union[date, None] # Birthdate (FØDT in original schema)
     _fodt_raw: Union[date, None] # Birthdate raw value (FØDT in original schema)
-    _fd_land_id: int # Birth country (FD-LAND in original schema)
-    _kjonn_id: int # Sex (KJØNN in original schema)
     _kullnr: Union[str, None] # Litter identifier (KULLNR in original schema)
 
+    # Enum ids
+    _fd_land_id: int # Birth country (FD-LAND in original schema)
+    _kjonn_id: int # Sex (KJØNN in original schema)
+    _hd_id: int # hd? (HD in original schema)
+    _ad_id: int # ad? (AD in original schema)
+
     def __init__(self, reg_nr: str, navn: str, fd_land_id: int, kjonn_id: int,
+                 hd_id: int, ad_id: int,
                  fodt: Union[date, None] = None, fodt_raw: Union[str, None] = None, kullnr: Union[str, None] = None) -> None:
         self._reg_nr = reg_nr
         self._navn = navn
@@ -20,6 +25,8 @@ class Hund:
         self._fd_land_id = fd_land_id
         self._kjonn_id = kjonn_id
         self._kullnr = kullnr
+        self._hd_id = hd_id
+        self._ad_id = ad_id
         self._fodt_raw = fodt_raw
     
     @classmethod
@@ -45,11 +52,11 @@ class Hund:
         
         # Eliminate the already used data and set the next property
         sub_content = sub_content[6:] # 222 bytes remaining
-        fd_land_id = sub_content[0]
+        fd_land_id = sub_content[0] # FD-LAND index
         
         # Eliminate the already used data and set the next property
         sub_content = sub_content[1:] # 221 bytes remaining
-        kjonn_id = sub_content[0]
+        kjonn_id = sub_content[0] # KJØNN index
         
         # Eliminate the already used data and set the next property
         sub_content = sub_content[1:] # 220 bytes remaining
@@ -58,8 +65,26 @@ class Hund:
         # Eliminate the already used data and set the next property
         sub_content = sub_content[5:] # 215 bytes remaining
         navn = graceful_conversion(sub_content[:38]) # NAVN (name of dog is a string capped at 38 characters)
+        
+        # Eliminate the already used data and set the next property
+        sub_content = sub_content[38:] # 177 bytes remaining
+        hd_id = sub_content[0] # HD index
+        
+        # Eliminate the already used data and set the next property
+        sub_content = sub_content[1:] # 215 bytes remaining
+        ad_id = sub_content[0] # AD index
 
-        return cls(reg_nr=reg_nr, fodt=fodt, fodt_raw=fodt_raw, fd_land_id=fd_land_id, kjonn_id=kjonn_id, kullnr=kullnr, navn=navn)
+        return cls(
+            reg_nr=reg_nr,
+            fodt=fodt,
+            fodt_raw=fodt_raw,
+            fd_land_id=fd_land_id,
+            kjonn_id=kjonn_id,
+            kullnr=kullnr,
+            navn=navn,
+            hd_id=hd_id,
+            ad_id=ad_id
+            )
     
     @property
     def reg_nr(self) -> str:
@@ -90,6 +115,14 @@ class Hund:
         return None if not self._kullnr else self._kullnr
     
     @property
+    def hd_id(self) -> int:
+        return self._hd_id
+    
+    @property
+    def ad_id(self) -> int:
+        return self._ad_id
+    
+    @property
     def fodt_raw(self) -> Union[str, None]:
         return self._fodt_raw
 
@@ -104,7 +137,9 @@ class Hund:
             'fodt_raw': self.fodt_raw,
             'fd_land_id': self._fd_land_id,
             'kjonn_id': self.kjonn_id,
-            'kullnr': self.kullnr
+            'kullnr': self.kullnr,
+            'hd_id': self.hd_id,
+            'ad_id': self.ad_id
             }
 
 class HundList:
