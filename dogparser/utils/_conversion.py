@@ -28,6 +28,7 @@ def base_conversions(input_element: bytes) -> bytes:
     data_out = data_out.replace(b'\x9b', b'?x9b?') # ø | HUNDER HD(Død)
     data_out = data_out.replace(b'\x9d', b'?x9d?') # Ø | HUNDER HEM(BLØDER)
     data_out = data_out.replace(b'\x81', b'?x81?') # HUNDER (reg_nr: 11353/94, value(far): Polo v. H?x81?hnegrab)
+    data_out = data_out.replace(b'\x82', b'?x82?') # EIERE (reg_nr: NINGS-K, value(sted): Fxxxxxxxx xxx?x82? XX X)
     data_out = data_out.replace(b'\x84', b'?x84?') # HUNDER (reg_nr: SZ1604440, value(farge): bl?x84?uling)
     data_out = data_out.replace(b'\x85', b'?x85?') # HUNDER (reg_nr: LOSH1006502, value(navn): FRISBEE D. PARC ?x85? MITRAILLES)
     data_out = data_out.replace(b'\x8e', b'?x8e?') # HUNDER (reg_nr: SZ2200013, value(navn): MACATO V. HOLTK?x8e?MPER SEE)
@@ -41,6 +42,7 @@ def base_conversions(input_element: bytes) -> bytes:
     data_out = data_out.replace(b'\xb7', b'?xb7?') # HUNDER (reg_nr: LOSH1054710, value(navn): HACH D. PARC ?xb7? MITRAILLES)
     data_out = data_out.replace(b'\xd4', b'?xd4?') # HUNDER (reg_nr: 20837/08, value(navn): G?xd?4NIE AV CHAMIROX)
     data_out = data_out.replace(b'\xe1', b'?xe1?') # HUNDER (reg_nr: SZ2162887, value(navn): LUNA V. SCHLO?xe1?G?x8e??xe1?CHEN)
+    data_out = data_out.replace(b'\xe4', b'?xe4?') # EIERE (reg_nr: SZ2169917, value(sted): Kxxxxx xxxx, x?xe4?xxx xxxx)
     data_out = data_out.replace(b'\xf9', b'?xf9?') # HUNDER (reg_nr: 57747/18, value(kennnel): HEIAG?xf9?RDEN, AV) x8f collision
     data_out = data_out.replace(b'\xff', b'?xff?') # HUNDER (reg_nr: SZ1915923, value(navn): OLDO V. SCHLO?xe1? BIRKENSTEIN?xff?)
     
