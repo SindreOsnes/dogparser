@@ -16,9 +16,10 @@ class Hund:
     _kjonn_id: int # Sex (KJØNN in original schema)
     _hd_id: int # hd? (HD in original schema)
     _ad_id: int # ad? (AD in original schema)
+    _hem_id: int # hem? (HEM in original schema)
 
     def __init__(self, reg_nr: str, navn: str, fd_land_id: int, kjonn_id: int,
-                 hd_id: int, ad_id: int,
+                 hd_id: int, ad_id: int, hem_id: int,
                  fodt: Union[date, None] = None, fodt_raw: Union[str, None] = None, kullnr: Union[str, None] = None,
                  kennel: Union[str, None] = None) -> None:
         self._reg_nr = reg_nr
@@ -31,6 +32,7 @@ class Hund:
         self._hd_id = hd_id
         self._ad_id = ad_id
         self._kennel = kennel
+        self._hem_id = hem_id
     
     @classmethod
     def from_bytes(cls, content: bytes):
@@ -80,6 +82,10 @@ class Hund:
         # Eliminate the already used data and set the next property
         sub_content = sub_content[1:] # 175 bytes remaining
         kennel = graceful_conversion(sub_content[:32]) # KENNEL (name of kennel is a string capped at 32 characters)
+        
+        # Eliminate the already used data and set the next property
+        sub_content = sub_content[32:] # 143 bytes remaining
+        hem_id = sub_content[0] # HEM index
 
         return cls(
             reg_nr=reg_nr,
@@ -91,7 +97,8 @@ class Hund:
             navn=navn,
             hd_id=hd_id,
             ad_id=ad_id,
-            kennel=kennel
+            kennel=kennel,
+            hem_id=hem_id,
             )
     
     @property
@@ -137,6 +144,10 @@ class Hund:
     @property
     def kennel(self) -> Union[str, None]:
         return None if not self._kennel else self._kennel
+    
+    @property
+    def hem_id(self) -> int:
+        return self._hem_id
 
     @property
     def native(self) -> dict:
@@ -152,7 +163,8 @@ class Hund:
             'kullnr': self.kullnr,
             'hd_id': self.hd_id,
             'ad_id': self.ad_id,
-            'kennel': self.kennel
+            'kennel': self.kennel,
+            'hem_id': self.hem_id,
             }
 
 class HundList:
