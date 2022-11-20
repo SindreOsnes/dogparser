@@ -27,6 +27,7 @@ def base_conversions(input_element: bytes) -> bytes:
     data_out = data_out.replace(b'\x94', b'?x94?') # ö | HUNDER BRUKS(Godkj Mögl)
     data_out = data_out.replace(b'\x9b', b'?x9b?') # ø | HUNDER HD(Død)
     data_out = data_out.replace(b'\x9d', b'?x9d?') # Ø | HUNDER HEM(BLØDER)
+    data_out = data_out.replace(b'\x84', b'?x84?') # HUNDER (reg_nr: SZ1604440, value(farge): bl?x84?uling)
     data_out = data_out.replace(b'\x85', b'?x85?') # HUNDER (reg_nr: LOSH1006502, value(navn): FRISBEE D. PARC ?x85? MITRAILLES)
     data_out = data_out.replace(b'\x8e', b'?x8e?') # HUNDER (reg_nr: SZ2200013, value(navn): MACATO V. HOLTK?x8e?MPER SEE)
     data_out = data_out.replace(b'\x8f', b'?x8f?') # HUNDER (reg_nr: 16703/08, value(navn): ICCARO AV PERLEG?x8f?RDEN)
