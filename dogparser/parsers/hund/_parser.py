@@ -29,8 +29,8 @@ def parse(source_definition: str, destination_folder: str):
             i+=1
 
     # Write the data
-    os.makedirs(os.path.join(destination_folder, 'DATA'))
-    with open(os.makedirs(os.path.join(destination_folder, 'DATA/hund.json'))) as f:
+    os.makedirs(os.path.join(destination_folder, 'DATA'), exist_ok=True)
+    with open(os.path.join(destination_folder, 'DATA/hund.json'), 'w', encoding='utf8') as f:
         json.dumps(HundList(hund_list).native, f, indent=2, ensure_ascii=False)
 
 
