@@ -19,6 +19,7 @@ def uncertain_conversions(input_element: bytes) -> bytes:
 
     data_out = input_element
     data_out = data_out.replace(b'\x8e', b'?x8e')
+    data_out = data_out.replace(b'\x8f', b'?x8f')
     data_out = data_out.replace(b'\x99', b'?x99')
     data_out = data_out.replace(b'\x9a', b'?x9a')
     
