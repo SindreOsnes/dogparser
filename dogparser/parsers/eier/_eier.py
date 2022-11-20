@@ -54,7 +54,7 @@ class Eier:
         
         # Eliminate the already used data and set the next property
         sub_content = sub_content[50:] # 47 bytes remaining
-        sted = graceful_conversion(sub_content[:40]) # STED (Adress is a string capped at 50 characters)
+        sted = graceful_conversion(sub_content[:40]) # STED (Address is a string capped at 40 characters)
         
         # Eliminate the already used data and set the next property
         sub_content = sub_content[40:] # 7 bytes remaining
