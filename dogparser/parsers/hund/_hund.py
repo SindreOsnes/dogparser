@@ -10,6 +10,7 @@ class Hund:
     _fodt_raw: Union[date, None] # Birthdate raw value (FØDT in original schema)
     _kullnr: Union[str, None] # Litter identifier (KULLNR in original schema)
     _kennel: Union[str, None] # Kennel name (KENNEL in original schema)
+    _farge: Union[str, None] # Color (FARGE in original schema)
 
     # Enum ids
     _fd_land_id: int # Birth country (FD-LAND in original schema)
@@ -21,7 +22,7 @@ class Hund:
     def __init__(self, reg_nr: str, navn: str, fd_land_id: int, kjonn_id: int,
                  hd_id: int, ad_id: int, hem_id: int,
                  fodt: Union[date, None] = None, fodt_raw: Union[str, None] = None, kullnr: Union[str, None] = None,
-                 kennel: Union[str, None] = None) -> None:
+                 kennel: Union[str, None] = None, farge: Union[str, None] = None,) -> None:
         self._reg_nr = reg_nr
         self._navn = navn
         self._fodt = fodt
@@ -33,6 +34,7 @@ class Hund:
         self._ad_id = ad_id
         self._kennel = kennel
         self._hem_id = hem_id
+        self._farge = farge
     
     @classmethod
     def from_bytes(cls, content: bytes):
@@ -86,6 +88,10 @@ class Hund:
         # Eliminate the already used data and set the next property
         sub_content = sub_content[32:] # 143 bytes remaining
         hem_id = sub_content[0] # HEM index
+        
+        # Eliminate the already used data and set the next property
+        sub_content = sub_content[1:] # 142 bytes remaining
+        farge = graceful_conversion(sub_content[:10]) # FARGE (color is a string capped at 10 characters)
 
         return cls(
             reg_nr=reg_nr,
@@ -99,6 +105,7 @@ class Hund:
             ad_id=ad_id,
             kennel=kennel,
             hem_id=hem_id,
+            farge=farge,
             )
     
     @property
@@ -148,6 +155,10 @@ class Hund:
     @property
     def hem_id(self) -> int:
         return self._hem_id
+    
+    @property
+    def farge(self) -> Union[str, None]:
+        return None if not self._farge else self._farge
 
     @property
     def native(self) -> dict:
@@ -165,6 +176,7 @@ class Hund:
             'ad_id': self.ad_id,
             'kennel': self.kennel,
             'hem_id': self.hem_id,
+            'farge': self.farge,
             }
 
 class HundList:
