@@ -1,11 +1,16 @@
 from typing import List, Union
+from datetime import date
 
 from ...utils import graceful_conversion
 
 class Hund:
     _reg_nr: str
-    def __init__(self, reg_nr: str) -> None:
+
+    _fodt: Union[date, None] # Birthdate (FØDT in original schema)
+
+    def __init__(self, reg_nr: str, fodt: Union[date, None] = None) -> None:
         self._reg_nr = reg_nr
+        self._fodt = fodt
     
     @classmethod
     def from_bytes(cls, content: bytes):
@@ -24,12 +29,16 @@ class Hund:
     @property
     def reg_nr(self) -> str:
         return self._reg_nr
+    
+    @property
+    def fodt(self) -> str:
+        return self._fodt
 
     @property
     def native(self) -> dict:
         """Method converts class instance to native python classes for serialization purposes"""
 
-        return {'reg_nr': self.reg_nr}
+        return {'reg_nr': self.reg_nr, 'fodt': self.fodt}
 
 
 class HundList:
