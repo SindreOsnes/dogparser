@@ -15,6 +15,9 @@ class Hund:
     _farens_reg_nr: str # Fathers registration number (FARENS REG.NR in original schema)
     _far: str #Fathers name (FAR in original schema)
 
+    _morens_reg_nr: str # Mothers registration number (MORENS REG.NR in original schema)
+    _mor: str # Mothers name (MOR in original schema)
+
     # Enum ids
     _fd_land_id: int # Birth country (FD-LAND in original schema)
     _kjonn_id: int # Sex (KJØNN in original schema)
@@ -48,7 +51,8 @@ class Hund:
                  kval_id: int, kval2_id: int, test_id: int, test2_id: int,
                  fodt: Union[date, None] = None, fodt_raw: Union[str, None] = None, kullnr: Union[str, None] = None,
                  kennel: Union[str, None] = None, farge: Union[str, None] = None,
-                 farens_reg_nr: Union[str, None] = None, far: Union[str, None] = None,) -> None:
+                 farens_reg_nr: Union[str, None] = None, far: Union[str, None] = None,
+                 morens_reg_nr: Union[str, None] = None, mor: Union[str, None] = None,) -> None:
         self._reg_nr = reg_nr
         self._navn = navn
         self._fodt = fodt
@@ -80,6 +84,8 @@ class Hund:
         self._test2_id = test2_id
         self._farens_reg_nr = farens_reg_nr
         self._far = test2_id = far
+        self._morens_reg_nr = morens_reg_nr
+        self._mor = test2_id = mor
     
     @classmethod
     def from_bytes(cls, content: bytes):
@@ -214,6 +220,14 @@ class Hund:
         sub_content = sub_content[12:] # 88 bytes remaining
         far = graceful_conversion(sub_content[:38]) # FAR (name of father is a string capped at 38 characters)
 
+        # Eliminate the already used data and set the next property
+        sub_content = sub_content[38:] # 50 bytes remaining
+        morens_reg_nr = graceful_conversion(sub_content[:12]) # FARENS REG.NR (registration number is a string capped at 12 characters)
+
+        # Eliminate the already used data and set the next property
+        sub_content = sub_content[12:] # 38 bytes remaining
+        mor = graceful_conversion(sub_content[:38]) # FAR (name of father is a string capped at 38 characters)
+
         return cls(
             reg_nr=reg_nr,
             fodt=fodt,
@@ -246,6 +260,8 @@ class Hund:
             test2_id=test2_id,
             farens_reg_nr=farens_reg_nr,
             far=far,
+            morens_reg_nr=morens_reg_nr,
+            mor=mor,
             )
     
     @property
@@ -375,6 +391,14 @@ class Hund:
     @property
     def far(self) -> Union[str, None]:
         return None if not self._far else self._far
+    
+    @property
+    def morens_reg_nr(self) -> Union[str, None]:
+        return None if not self._morens_reg_nr else self._morens_reg_nr
+    
+    @property
+    def mor(self) -> Union[str, None]:
+        return None if not self._mor else self._mor
 
     @property
     def native(self) -> dict:
@@ -412,6 +436,8 @@ class Hund:
             'test2_id':  self.test2_id,
             'farens_reg_nr': self.farens_reg_nr,
             'far': self.far,
+            'morens_reg_nr': self.morens_reg_nr,
+            'mor': self.mor,
         }
 
         return obj_dict
