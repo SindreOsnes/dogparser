@@ -17,13 +17,21 @@ def parse(source_definition: str, destination_folder: str):
     element_len = 250
 
     with open(data_file, 'rb') as f:
+        i = 0
         data = f.read(element_len)
-        hund = Hund.from_bytes(data)
 
-        hund_list.append(hund)
+        while len(data) == element_len:
+            if i and not i% 1000:
+                print(f'{i} records parsed')
+            hund = Hund.from_bytes(data)
+            hund_list.append(hund)
+            data = f.read(element_len)
+            i+=1
 
-        hund_str = json.dumps(HundList(hund_list).native)
-        print(hund_str)
+    # Write the data
+    os.makedirs(os.path.join(destination_folder, 'DATA'))
+    with open(os.makedirs(os.path.join(destination_folder, 'DATA/hund.json'))) as f:
+        json.dumps(HundList(hund_list).native, f, indent=2, ensure_ascii=False)
 
 
 def parse_schema(source_definition: str, destination_folder: str):
