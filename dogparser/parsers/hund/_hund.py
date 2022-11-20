@@ -74,8 +74,12 @@ class Hund:
         hd_id = sub_content[0] # HD index
         
         # Eliminate the already used data and set the next property
-        sub_content = sub_content[1:] # 215 bytes remaining
+        sub_content = sub_content[1:] # 176 bytes remaining
         ad_id = sub_content[0] # AD index
+        
+        # Eliminate the already used data and set the next property
+        sub_content = sub_content[1:] # 175 bytes remaining
+        kennel = graceful_conversion(sub_content[:32]) # KENNEL (name of kennel is a string capped at 32 characters)
 
         return cls(
             reg_nr=reg_nr,
@@ -86,7 +90,8 @@ class Hund:
             kullnr=kullnr,
             navn=navn,
             hd_id=hd_id,
-            ad_id=ad_id
+            ad_id=ad_id,
+            kennel=kennel
             )
     
     @property
