@@ -1,7 +1,7 @@
 from typing import List, Union
 from datetime import date
 
-from ...utils import graceful_conversion
+from ...utils import graceful_conversion, date_conversion
 
 class Hund:
     _reg_nr: str
@@ -20,11 +20,15 @@ class Hund:
         # The dog table contains a 10 byte header that does not contain usefull data
         header = content[:10]
 
-        # ELiminate the already used data and set the next property
+        # Eliminate the already used data and set the next property
         sub_content = content[10:] # 240 bytes remaining
         reg_nr = graceful_conversion(sub_content[:12]) # REG.NR (registration number is a string capped at 12 character)
 
-        return cls(reg_nr=reg_nr)
+        # Eliminate the already used data and set the next property
+        sub_content = sub_content[12:] # 228 bytes remaining
+        fodt = date_conversion(sub_content[:6]) # FØDT (birthdate/født is represented by a 6 digit numerical string)
+
+        return cls(reg_nr=reg_nr, fodt=fodt)
     
     @property
     def reg_nr(self) -> str:

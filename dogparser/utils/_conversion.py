@@ -28,7 +28,7 @@ def uncertain_conversions(input_element: bytes) -> bytes:
     
     return data_out
 
-def date_conversion(data: bytes) -> Union[str, None]:
+def date_conversion(data: bytes) -> Union[date, None]:
     datestr = graceful_conversion(data)
     if len(datestr) != 6:
         return None
@@ -43,7 +43,7 @@ def date_conversion(data: bytes) -> Union[str, None]:
             month = int(datestr[2:-2])
             day = int(datestr[0:2])
 
-            return date(day=day, month=month, year=year).isoformat()
+            return date(day=day, month=month, year=year)
         except Exception as e:
             print(datestr, data)
             raise e
