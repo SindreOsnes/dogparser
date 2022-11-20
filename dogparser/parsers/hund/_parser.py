@@ -5,6 +5,11 @@ from ...utils import extract_enum, extract_values
 
 def parse(source_definition: str, destination_folder: str):
     
+    # Parse the schem
+    parse_schema(source_definition=source_definition, destination_folder=destination_folder)
+
+def parse_schema(source_definition: str, destination_folder: str):
+    
     # Read the schema
     schema_file = source_definition + '.DBA'
 
