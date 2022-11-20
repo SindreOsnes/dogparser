@@ -7,10 +7,12 @@ class Hund:
     _reg_nr: str
 
     _fodt: Union[date, None] # Birthdate (FØDT in original schema)
+    _fodt_raw: Union[date, None] # Birthdate raw value (FØDT in original schema)
 
-    def __init__(self, reg_nr: str, fodt: Union[date, None] = None) -> None:
+    def __init__(self, reg_nr: str, fodt: Union[date, None] = None, fodt_raw: Union[str, None] = None) -> None:
         self._reg_nr = reg_nr
         self._fodt = fodt
+        self._fodt_raw = fodt_raw
     
     @classmethod
     def from_bytes(cls, content: bytes):
@@ -26,24 +28,36 @@ class Hund:
 
         # Eliminate the already used data and set the next property
         sub_content = sub_content[12:] # 228 bytes remaining
-        fodt = date_conversion(sub_content[:6]) # FØDT (birthdate/født is represented by a 6 digit numerical string)
+        fodt = None
+        fodt_raw = graceful_conversion(sub_content[:6])
+        try:
+            fodt = date_conversion(sub_content[:6]) # FØDT (birthdate/født is represented by a 6 digit numerical string)
+        except ValueError as e:
+            print(e)
 
-        return cls(reg_nr=reg_nr, fodt=fodt)
+        return cls(reg_nr=reg_nr, fodt=fodt, fodt_raw=fodt_raw)
     
     @property
     def reg_nr(self) -> str:
         return self._reg_nr
     
     @property
-    def fodt(self) -> str:
+    def fodt(self) -> Union[date, None]:
         return self._fodt
+    
+    @property
+    def fodt_str(self) -> Union[str, None]:
+        return self._fodt if not self._fodt else self.fodt.isoformat()
+    
+    @property
+    def fodt_raw(self) -> Union[str, None]:
+        return self._fodt_raw
 
     @property
     def native(self) -> dict:
         """Method converts class instance to native python classes for serialization purposes"""
 
-        return {'reg_nr': self.reg_nr, 'fodt': self.fodt}
-
+        return {'reg_nr': self.reg_nr, 'fodt': self.fodt_str, 'fodt_raw': self.fodt_raw}
 
 class HundList:
 
