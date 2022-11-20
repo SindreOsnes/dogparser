@@ -1,7 +1,7 @@
 def graceful_conversion(input_element: bytes) -> str:
     data_out = input_element
     data_out = sure_conversion(data_out)
-    return data_out.decode('utf8')
+    return data_out.rstrip(b'\x00').decode('utf8')
 
 def sure_conversion(input_element: bytes) -> bytes:
     data_out = input_element
