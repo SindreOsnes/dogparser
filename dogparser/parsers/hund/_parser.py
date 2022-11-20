@@ -67,8 +67,3 @@ def parse_schema(source_definition: str, destination_folder: str):
 
         with open(os.path.join(destination_folder, file), 'w') as f:
             json.dump(enum, f, ensure_ascii=False, indent=True)
-
-    print(schema_split)
-    print(columns)
-    print(schema_split[0])
-
