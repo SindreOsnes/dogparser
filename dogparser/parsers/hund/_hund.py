@@ -7,7 +7,7 @@ class Hund:
     _reg_nr: str # Registration number (REG.NR in original schema)
     _navn: str # Name (NAVN in original schema)
     _fodt: Union[date, None] # Birthdate (FØDT in original schema)
-    _fodt_raw: Union[date, None] # Birthdate raw value (FØDT in original schema)
+    _fodt_raw: Union[str, None] # Birthdate raw value (FØDT in original schema)
     _kullnr: Union[str, None] # Litter identifier (KULLNR in original schema)
     _kennel: Union[str, None] # Kennel name (KENNEL in original schema)
     _farge: Union[str, None] # Color (FARGE in original schema)
