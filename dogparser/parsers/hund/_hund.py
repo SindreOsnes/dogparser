@@ -94,9 +94,10 @@ class Hund:
         
         # The dog table contains a 10 byte header that does not contain usefull data
         header = content[:10]
+        sub_content = content
 
         # Eliminate the already used data and set the next property
-        sub_content = content[10:] # 240 bytes remaining
+        sub_content = sub_content[10:] # 240 bytes remaining
         reg_nr = graceful_conversion(sub_content[:12]) # REG.NR (registration number is a string capped at 12 characters)
 
         # Eliminate the already used data and set the next property
@@ -222,11 +223,11 @@ class Hund:
 
         # Eliminate the already used data and set the next property
         sub_content = sub_content[38:] # 50 bytes remaining
-        morens_reg_nr = graceful_conversion(sub_content[:12]) # FARENS REG.NR (registration number is a string capped at 12 characters)
+        morens_reg_nr = graceful_conversion(sub_content[:12]) # MORENS REG.NR (registration number is a string capped at 12 characters)
 
         # Eliminate the already used data and set the next property
         sub_content = sub_content[12:] # 38 bytes remaining
-        mor = graceful_conversion(sub_content[:38]) # FAR (name of father is a string capped at 38 characters)
+        mor = graceful_conversion(sub_content[:38]) # MOR (name of mother is a string capped at 38 characters)
 
         return cls(
             reg_nr=reg_nr,
