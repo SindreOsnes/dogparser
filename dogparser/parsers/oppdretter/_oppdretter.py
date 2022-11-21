@@ -44,6 +44,7 @@ class Oppdretter:
         
         # The breeder table contains a 5 byte header that does not contain usefull data
         header = content[:5]
+        sub_content = content
 
         # Eliminate the already used data and set the next property
         sub_content = sub_content[5:] # 245 bytes remaining
