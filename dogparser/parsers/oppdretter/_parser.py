@@ -53,6 +53,9 @@ def parse_schema(source_definition: str, destination_folder: str):
     schema_split = stripped_schema_data.split(b'\x00')
 
     enums = [
+        (b'PREFIKS', 'PREFIKS.json'),
+        (b'LAND', 'LAND.json'),
+        (b'OPREFIKS', 'OPREFIKS.json'),
     ]
 
     for target, file in enums:
@@ -61,3 +64,5 @@ def parse_schema(source_definition: str, destination_folder: str):
 
         with open(os.path.join(destination_folder, file), 'w') as f:
             json.dump(enum, f, ensure_ascii=False, indent=True)
+    
+    print(schema_split[0])
