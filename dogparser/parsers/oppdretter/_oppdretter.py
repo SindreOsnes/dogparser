@@ -115,7 +115,7 @@ class Oppdretter:
     
     @property
     def prefiks_id(self) -> int:
-        return self.prefiks_id
+        return self._prefiks_id
     
     @property
     def fd_land_id(self) -> int:
@@ -147,7 +147,7 @@ class Oppdretter:
     
     @property
     def oprefiks_id(self) -> int:
-        return self.oprefiks_id
+        return self._oprefiks_id
     
     @property
     def kunkennel(self) -> Union[str, None]:
