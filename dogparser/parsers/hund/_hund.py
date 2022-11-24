@@ -83,16 +83,16 @@ class Hund:
         self._test_id = test_id
         self._test2_id = test2_id
         self._farens_reg_nr = farens_reg_nr
-        self._far = test2_id = far
+        self._far = far
         self._morens_reg_nr = morens_reg_nr
-        self._mor = test2_id = mor
+        self._mor = mor
     
     @classmethod
     def from_bytes(cls, content: bytes):
         if len(content) != 250:
             raise AssertionError('Input for Hund should be 250 bytes')
         
-        # The dog table contains a 10 byte header that does not contain usefull data
+        # The dog table contains a 10 byte header that does not contain useful data
         header = content[:10]
         sub_content = content
 
