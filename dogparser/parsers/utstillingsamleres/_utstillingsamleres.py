@@ -17,10 +17,13 @@ class Utstillingsamleres:
     _antgangutstilt: int # Number of times displayed (ANTGANGUTSTILT in original schema)
     _premieant1: int # Number of times won (1PREMIEANT in original schema)
     _premiepros1: int # Winning percentage (1PREMIEPROS in original schema)
+    _premieant2: int # Number of times placed 2nd (2PREMIEANT in original schema)
+    _premiepros2: int # 2nd percentage (2PREMIEPROS in original schema)
 
     def __init__(self, reg_nr: str, farens_reg_nr: Union[str, None], morfars_reg_nr: Union[str, None]
 , fodt: Union[date, None], fodt_raw: Union[str, None], kjonn_id: int, oppdateringsdato: Union[date, None], oppdateringsdato_raw: Union[str, None]
-, antgangutstilt: int, premieant1: int, premiepros1: int) -> None:
+, antgangutstilt: int, premieant1: int, premiepros1: int
+, premieant2: int, premiepros2: int) -> None:
         self._reg_nr = reg_nr
         self._farens_reg_nr = farens_reg_nr
         self._morfars_reg_nr = morfars_reg_nr
@@ -32,6 +35,8 @@ class Utstillingsamleres:
         self._antgangutstilt = antgangutstilt
         self._premieant1 = premieant1
         self._premiepros1 = premiepros1
+        self._premieant2 = premieant2
+        self._premiepros2 = premiepros2
 
     @classmethod
     def from_bytes(cls, content: bytes):
@@ -98,6 +103,18 @@ class Utstillingsamleres:
         # Remove used data from next entries
         sub_content = sub_content[2:]
 
+        # Parse the 2PREMIEANT property
+        premieant2 = struct.unpack('H', sub_content[:2])[0] # 2PREMIEANT (Number of times placed 2nd is a 2 byte integer)
+        premieant2 = None if premieant2 == 32768 else premieant2 # Set to python None if value indicates null
+        # Remove used data from next entries
+        sub_content = sub_content[2:]
+
+        # Parse the 2PREMIEPROS property
+        premiepros2 = struct.unpack('H', sub_content[:2])[0] # 2PREMIEPROS (2nd percentage is a 2 byte integer)
+        premiepros2 = None if premiepros2 == 32768 else premiepros2 # Set to python None if value indicates null
+        # Remove used data from next entries
+        sub_content = sub_content[2:]
+
         return cls(reg_nr=reg_nr,
                    farens_reg_nr=farens_reg_nr,
                    morfars_reg_nr=morfars_reg_nr,
@@ -108,7 +125,9 @@ class Utstillingsamleres:
                    oppdateringsdato_raw=oppdateringsdato_raw,
                    antgangutstilt=antgangutstilt,
                    premieant1=premieant1,
-                   premiepros1=premiepros1)
+                   premiepros1=premiepros1,
+                   premieant2=premieant2,
+                   premiepros2=premiepros2)
 
     @property
     def reg_nr(self) -> str:
@@ -163,6 +182,14 @@ class Utstillingsamleres:
         return self._premiepros1
 
     @property
+    def premieant2(self) -> int:
+        return self._premieant2
+
+    @property
+    def premiepros2(self) -> int:
+        return self._premiepros2
+
+    @property
     def native(self) -> dict:
         """Method converts class instance to native python classes for serialization purposes"""
 
@@ -178,6 +205,8 @@ class Utstillingsamleres:
             'antgangutstilt': self.antgangutstilt,
             'premieant1': self.premieant1,
             'premiepros1': self.premiepros1,
+            'premieant2': self.premieant2,
+            'premiepros2': self.premiepros2,
         }
 
         return obj_dict
