@@ -13,12 +13,12 @@ class Kull:
     _oppdr: Union[str, None] # Breeder (OPPDR in original schema)
     _adresse: Union[str, None] # Address (ADRESSE in original schema)
     _postnr: Union[str, None] # Postal code (POSTNR in original schema)
-    _farens_reg_nr: str # Fathers registration number (FARENS REG.NR in original schema)
-    _morfars_reg_nr: str # Grandfathers registration number (MORFARS REG.NR in original schema)
-    _morens_reg_nr: str # Mothers registration number (MORENS REG.NR in original schema)
-    _sosken: str # Siblings (SØSKEN in original schema)
-    _innavl: str # Inbreeding (INNAVL in original schema)
-    _merkn: str # Remarks (MERKN in original schema)
+    _farens_reg_nr: Union[str, None] # Fathers registration number (FARENS REG.NR in original schema)
+    _morfars_reg_nr: Union[str, None] # Grandfathers registration number (MORFARS REG.NR in original schema)
+    _morens_reg_nr: Union[str, None] # Mothers registration number (MORENS REG.NR in original schema)
+    _sosken: Union[str, None] # Siblings (SØSKEN in original schema)
+    _innavl: Union[str, None] # Inbreeding (INNAVL in original schema)
+    _merkn: Union[str, None] # Remarks (MERKN in original schema)
     _ant: Union[int, None] # Number (ANT in original schema)
     _h: Union[int, None] # H? (H in original schema)
     _t: Union[int, None] # T? (T in original schema)
@@ -61,9 +61,9 @@ class Kull:
 
     def __init__(self, kullb: Union[str, None], kennel: Union[str, None], kullnr: str
                , fodt: Union[date, None], fodt_raw: Union[str, None], fd_land_id: int, oppdr: Union[str, None]
-               , adresse: Union[str, None], postnr: Union[str, None], farens_reg_nr: str
-               , morfars_reg_nr: str, morens_reg_nr: str, sosken: str
-               , innavl: str, merkn: str, ant: Union[int, None]
+               , adresse: Union[str, None], postnr: Union[str, None], farens_reg_nr: Union[str, None]
+               , morfars_reg_nr: Union[str, None], morens_reg_nr: Union[str, None], sosken: Union[str, None]
+               , innavl: Union[str, None], merkn: Union[str, None], ant: Union[int, None]
                , h: Union[int, None], t: Union[int, None], utmrkber: Union[int, None]
                , friber: Union[int, None], svakber: Union[int, None], middelsber: Union[int, None]
                , sterkber: Union[int, None], utmrk: Union[int, None], fri: Union[int, None]
@@ -531,28 +531,28 @@ class Kull:
         return None if not self._postnr else self._postnr
 
     @property
-    def farens_reg_nr(self) -> str:
-        return self._farens_reg_nr
+    def farens_reg_nr(self) -> Union[str, None]:
+        return None if not self._farens_reg_nr else self._farens_reg_nr
 
     @property
-    def morfars_reg_nr(self) -> str:
-        return self._morfars_reg_nr
+    def morfars_reg_nr(self) -> Union[str, None]:
+        return None if not self._morfars_reg_nr else self._morfars_reg_nr
 
     @property
-    def morens_reg_nr(self) -> str:
-        return self._morens_reg_nr
+    def morens_reg_nr(self) -> Union[str, None]:
+        return None if not self._morens_reg_nr else self._morens_reg_nr
 
     @property
-    def sosken(self) -> str:
-        return self._sosken
+    def sosken(self) -> Union[str, None]:
+        return None if not self._sosken else self._sosken
 
     @property
-    def innavl(self) -> str:
-        return self._innavl
+    def innavl(self) -> Union[str, None]:
+        return None if not self._innavl else self._innavl
 
     @property
-    def merkn(self) -> str:
-        return self._merkn
+    def merkn(self) -> Union[str, None]:
+        return None if not self._merkn else self._merkn
 
     @property
     def ant(self) -> Union[int, None]:
