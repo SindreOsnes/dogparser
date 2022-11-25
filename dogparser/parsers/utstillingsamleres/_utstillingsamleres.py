@@ -25,13 +25,16 @@ class Utstillingsamleres:
     _kibpros: int # KIB Percentage (KIBPROS in original schema)
     _hpant: int # HP number (HPANT in original schema)
     _hppros: int # HP Percentage (HPPROS in original schema)
+    _ckant: int # CK number (CKANT in original schema)
+    _ckpros: int # CK Percentage (CKPROS in original schema)
 
     def __init__(self, reg_nr: str, farens_reg_nr: Union[str, None], morfars_reg_nr: Union[str, None]
 , fodt: Union[date, None], fodt_raw: Union[str, None], kjonn_id: int, oppdateringsdato: Union[date, None], oppdateringsdato_raw: Union[str, None]
 , antgangutstilt: int, premieant1: int, premiepros1: int
 , premieant2: int, premiepros2: int, premieant3: int
 , premiepros3: int, kibant: int, kibpros: int
-, hpant: int, hppros: int) -> None:
+, hpant: int, hppros: int, ckant: int
+, ckpros: int) -> None:
         self._reg_nr = reg_nr
         self._farens_reg_nr = farens_reg_nr
         self._morfars_reg_nr = morfars_reg_nr
@@ -51,6 +54,8 @@ class Utstillingsamleres:
         self._kibpros = kibpros
         self._hpant = hpant
         self._hppros = hppros
+        self._ckant = ckant
+        self._ckpros = ckpros
 
     @classmethod
     def from_bytes(cls, content: bytes):
@@ -165,6 +170,18 @@ class Utstillingsamleres:
         # Remove used data from next entries
         sub_content = sub_content[2:]
 
+        # Parse the CKANT property
+        ckant = struct.unpack('H', sub_content[:2])[0] # CKANT (CK number is a 2 byte integer)
+        ckant = None if ckant == 32768 else ckant # Set to python None if value indicates null
+        # Remove used data from next entries
+        sub_content = sub_content[2:]
+
+        # Parse the CKPROS property
+        ckpros = struct.unpack('H', sub_content[:2])[0] # CKPROS (CK Percentage is a 2 byte integer)
+        ckpros = None if ckpros == 32768 else ckpros # Set to python None if value indicates null
+        # Remove used data from next entries
+        sub_content = sub_content[2:]
+
         return cls(reg_nr=reg_nr,
                    farens_reg_nr=farens_reg_nr,
                    morfars_reg_nr=morfars_reg_nr,
@@ -183,7 +200,9 @@ class Utstillingsamleres:
                    kibant=kibant,
                    kibpros=kibpros,
                    hpant=hpant,
-                   hppros=hppros)
+                   hppros=hppros,
+                   ckant=ckant,
+                   ckpros=ckpros)
 
     @property
     def reg_nr(self) -> str:
@@ -270,6 +289,14 @@ class Utstillingsamleres:
         return self._hppros
 
     @property
+    def ckant(self) -> int:
+        return self._ckant
+
+    @property
+    def ckpros(self) -> int:
+        return self._ckpros
+
+    @property
     def native(self) -> dict:
         """Method converts class instance to native python classes for serialization purposes"""
 
@@ -293,6 +320,8 @@ class Utstillingsamleres:
             'kibpros': self.kibpros,
             'hpant': self.hpant,
             'hppros': self.hppros,
+            'ckant': self.ckant,
+            'ckpros': self.ckpros,
         }
 
         return obj_dict
