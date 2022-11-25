@@ -18,12 +18,15 @@ class Utstillingsamleres:
     _premieant1: int # Number of times won (1PREMIEANT in original schema)
     _premiepros1: int # Winning percentage (1PREMIEPROS in original schema)
     _premieant2: int # Number of times placed 2nd (2PREMIEANT in original schema)
-    _premiepros2: int # 2nd percentage (2PREMIEPROS in original schema)
+    _premiepros2: int # 2nd place percentage (2PREMIEPROS in original schema)
+    _premieant3: int # Number of times placed 3rd (3PREMIEANT in original schema)
+    _premiepros3: int # 3rd place percentage (3PREMIEPROS in original schema)
 
     def __init__(self, reg_nr: str, farens_reg_nr: Union[str, None], morfars_reg_nr: Union[str, None]
 , fodt: Union[date, None], fodt_raw: Union[str, None], kjonn_id: int, oppdateringsdato: Union[date, None], oppdateringsdato_raw: Union[str, None]
 , antgangutstilt: int, premieant1: int, premiepros1: int
-, premieant2: int, premiepros2: int) -> None:
+, premieant2: int, premiepros2: int, premieant3: int
+, premiepros3: int) -> None:
         self._reg_nr = reg_nr
         self._farens_reg_nr = farens_reg_nr
         self._morfars_reg_nr = morfars_reg_nr
@@ -37,6 +40,8 @@ class Utstillingsamleres:
         self._premiepros1 = premiepros1
         self._premieant2 = premieant2
         self._premiepros2 = premiepros2
+        self._premieant3 = premieant3
+        self._premiepros3 = premiepros3
 
     @classmethod
     def from_bytes(cls, content: bytes):
@@ -110,8 +115,20 @@ class Utstillingsamleres:
         sub_content = sub_content[2:]
 
         # Parse the 2PREMIEPROS property
-        premiepros2 = struct.unpack('H', sub_content[:2])[0] # 2PREMIEPROS (2nd percentage is a 2 byte integer)
+        premiepros2 = struct.unpack('H', sub_content[:2])[0] # 2PREMIEPROS (2nd place percentage is a 2 byte integer)
         premiepros2 = None if premiepros2 == 32768 else premiepros2 # Set to python None if value indicates null
+        # Remove used data from next entries
+        sub_content = sub_content[2:]
+
+        # Parse the 3PREMIEANT property
+        premieant3 = struct.unpack('H', sub_content[:2])[0] # 3PREMIEANT (Number of times placed 3rd is a 2 byte integer)
+        premieant3 = None if premieant3 == 32768 else premieant3 # Set to python None if value indicates null
+        # Remove used data from next entries
+        sub_content = sub_content[2:]
+
+        # Parse the 3PREMIEPROS property
+        premiepros3 = struct.unpack('H', sub_content[:2])[0] # 3PREMIEPROS (3rd place percentage is a 2 byte integer)
+        premiepros3 = None if premiepros3 == 32768 else premiepros3 # Set to python None if value indicates null
         # Remove used data from next entries
         sub_content = sub_content[2:]
 
@@ -127,7 +144,9 @@ class Utstillingsamleres:
                    premieant1=premieant1,
                    premiepros1=premiepros1,
                    premieant2=premieant2,
-                   premiepros2=premiepros2)
+                   premiepros2=premiepros2,
+                   premieant3=premieant3,
+                   premiepros3=premiepros3)
 
     @property
     def reg_nr(self) -> str:
@@ -190,6 +209,14 @@ class Utstillingsamleres:
         return self._premiepros2
 
     @property
+    def premieant3(self) -> int:
+        return self._premieant3
+
+    @property
+    def premiepros3(self) -> int:
+        return self._premiepros3
+
+    @property
     def native(self) -> dict:
         """Method converts class instance to native python classes for serialization purposes"""
 
@@ -207,6 +234,8 @@ class Utstillingsamleres:
             'premiepros1': self.premiepros1,
             'premieant2': self.premieant2,
             'premiepros2': self.premiepros2,
+            'premieant3': self.premieant3,
+            'premiepros3': self.premiepros3,
         }
 
         return obj_dict
