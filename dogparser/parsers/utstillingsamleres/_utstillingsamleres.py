@@ -16,10 +16,11 @@ class Utstillingsamleres:
     _oppdateringsdato_raw: Union[str, None] # Update date raw value (OPPDATERINGSDATO in original schema)
     _antgangutstilt: int # Number of times displayed (ANTGANGUTSTILT in original schema)
     _premieant1: int # Number of times won (1PREMIEANT in original schema)
+    _premiepros1: int # Winning percentage (1PREMIEPROS in original schema)
 
     def __init__(self, reg_nr: str, farens_reg_nr: Union[str, None], morfars_reg_nr: Union[str, None]
 , fodt: Union[date, None], fodt_raw: Union[str, None], kjonn_id: int, oppdateringsdato: Union[date, None], oppdateringsdato_raw: Union[str, None]
-, antgangutstilt: int, premieant1: int) -> None:
+, antgangutstilt: int, premieant1: int, premiepros1: int) -> None:
         self._reg_nr = reg_nr
         self._farens_reg_nr = farens_reg_nr
         self._morfars_reg_nr = morfars_reg_nr
@@ -30,6 +31,7 @@ class Utstillingsamleres:
         self._oppdateringsdato_raw = oppdateringsdato_raw
         self._antgangutstilt = antgangutstilt
         self._premieant1 = premieant1
+        self._premiepros1 = premiepros1
 
     @classmethod
     def from_bytes(cls, content: bytes):
@@ -90,6 +92,12 @@ class Utstillingsamleres:
         # Remove used data from next entries
         sub_content = sub_content[2:]
 
+        # Parse the 1PREMIEPROS property
+        premiepros1 = struct.unpack('H', sub_content[:2])[0] # 1PREMIEPROS (Winning percentage is a 2 byte integer)
+        premiepros1 = None if premiepros1 == 32768 else premiepros1 # Set to python None if value indicates null
+        # Remove used data from next entries
+        sub_content = sub_content[2:]
+
         return cls(reg_nr=reg_nr,
                    farens_reg_nr=farens_reg_nr,
                    morfars_reg_nr=morfars_reg_nr,
@@ -99,7 +107,8 @@ class Utstillingsamleres:
                    oppdateringsdato=oppdateringsdato,
                    oppdateringsdato_raw=oppdateringsdato_raw,
                    antgangutstilt=antgangutstilt,
-                   premieant1=premieant1)
+                   premieant1=premieant1,
+                   premiepros1=premiepros1)
 
     @property
     def reg_nr(self) -> str:
@@ -150,6 +159,10 @@ class Utstillingsamleres:
         return self._premieant1
 
     @property
+    def premiepros1(self) -> int:
+        return self._premiepros1
+
+    @property
     def native(self) -> dict:
         """Method converts class instance to native python classes for serialization purposes"""
 
@@ -164,6 +177,7 @@ class Utstillingsamleres:
             'oppdateringsdato_raw': self.oppdateringsdato_raw,
             'antgangutstilt': self.antgangutstilt,
             'premieant1': self.premieant1,
+            'premiepros1': self.premiepros1,
         }
 
         return obj_dict
