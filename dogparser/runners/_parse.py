@@ -1,6 +1,6 @@
 import argparse
 import os
-from dogparser.parsers import hund, eier, innavl, oppdretter, tyskull
+from dogparser.parsers import hund, eier, innavl, oppdretter, tyskull, utstillingsamleres
 
 
 def parse():
@@ -12,7 +12,7 @@ def parse():
     args = argument_parser.parse_args()
 
     # Validate the inputs
-    if args.TABLE not in ['HUNDER', 'EIERE', 'INNAVL', 'OPPDRETTERE', 'TYSKULL']:
+    if args.TABLE not in ['HUNDER', 'EIERE', 'INNAVL', 'OPPDRETTERE', 'TYSKULL', 'UTSTILLINGSAMLERES']:
         raise AssertionError(f'Table {args.TABLE} is not valid')
 
     if not os.path.exists(args.SOURCE_FILE+'.DBM'):
@@ -35,5 +35,8 @@ def parse():
 
     elif args.TABLE == 'TYSKULL':
         tyskull.parse(args.SOURCE_FILE, os.path.join(args.DESTINATION_FOLDER, args.TABLE))
+
+    elif args.TABLE == 'UTSTILLINGSAMLERES':
+        utstillingsamleres.parse(args.SOURCE_FILE, os.path.join(args.DESTINATION_FOLDER, args.TABLE))
 
     print('Hello World')
