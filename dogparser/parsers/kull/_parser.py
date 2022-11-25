@@ -43,9 +43,9 @@ def parse_schema(source_definition: str, destination_folder: str):
         schema_data = f.read()
     
     # Strip the extraneous data and split into elements
-    stripped_schema_data = schema_data[schema_data.index(b'REG.NR')-1:]
+    stripped_schema_data = schema_data[schema_data.index(b'b1')-1:]
     schema_split = stripped_schema_data.split(b'\x00')
-    columns, _ = extract_values(schema_split, 0, schema_data[schema_data.index(b'REG.NR')-1])
+    columns, _ = extract_values(schema_split, 0, schema_data[schema_data.index(b'b1')-1])
     print(columns)
 
 
