@@ -1,6 +1,6 @@
 import argparse
 import os
-from dogparser.parsers import hund, eier, innavl, oppdretter, tyskull, utstillingsamleres, poststed, siegervinner, kull
+from dogparser.parsers import hund, eier, innavl, oppdretter, tyskull, utstillingsamleres, poststed, siegervinner, kull, hdstat
 
 
 def parse():
@@ -12,7 +12,7 @@ def parse():
     args = argument_parser.parse_args()
 
     # Validate the inputs
-    if args.TABLE not in ['HUNDER', 'EIERE', 'INNAVL', 'OPPDRETTERE', 'TYSKULL', 'UTSTILLINGSAMLERES', 'POSTSTEDER', 'SIEGERVINNER', 'KULL']:
+    if args.TABLE not in ['HUNDER', 'EIERE', 'INNAVL', 'OPPDRETTERE', 'TYSKULL', 'UTSTILLINGSAMLERES', 'POSTSTEDER', 'SIEGERVINNER', 'KULL', 'HDSTAT']:
         raise AssertionError(f'Table {args.TABLE} is not valid')
 
     if not os.path.exists(args.SOURCE_FILE+'.DBM'):
@@ -47,5 +47,8 @@ def parse():
 
     elif args.TABLE == 'KULL':
         kull.parse(args.SOURCE_FILE, os.path.join(args.DESTINATION_FOLDER, args.TABLE))
+
+    elif args.TABLE == 'HDSTAT':
+        hdstat.parse(args.SOURCE_FILE, os.path.join(args.DESTINATION_FOLDER, args.TABLE))
 
     print('Hello World')
