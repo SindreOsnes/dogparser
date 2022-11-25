@@ -12,6 +12,7 @@
     dog "UTSTILLINGSAMLERES" "C:\Users\Sindre Osnes\Downloads\Hunder\Hunder060822\DEASE453\Hunder\UTSTHAAD" "C:\Users\Sindre Osnes\Desktop\Hunder\CLI_PARSE"
     dog "POSTSTEDER" "C:\Users\Sindre Osnes\Downloads\Hunder\Hunder060822\DEASE453\Hunder\POSTHAAA" "C:\Users\Sindre Osnes\Desktop\Hunder\CLI_PARSE"
     dog "SIEGERVINNER" "C:\Users\Sindre Osnes\Downloads\Hunder\Hunder060822\DEASE453\Hunder\SIEGHAAA" "C:\Users\Sindre Osnes\Desktop\Hunder\CLI_PARSE"
+    dog "SIEGERVINNER2" "C:\Users\Sindre Osnes\Downloads\Hunder\Hunder060822\DEASE453\Hunder\SIEGHAAB" "C:\Users\Sindre Osnes\Desktop\Hunder\CLI_PARSE"
     dog "KULL" "C:\Users\Sindre Osnes\Downloads\Hunder\Hunder060822\DEASE453\Hunder\KULLHAAE" "C:\Users\Sindre Osnes\Desktop\Hunder\CLI_PARSE"
     dog "HDSTAT" "C:\Users\Sindre Osnes\Downloads\Hunder\Hunder060822\DEASE453\Hunder\HDSTHAAE" "C:\Users\Sindre Osnes\Desktop\Hunder\CLI_PARSE"
 ```
