@@ -27,6 +27,8 @@ class Utstillingsamleres:
     _hppros: int # HP Percentage (HPPROS in original schema)
     _ckant: int # CK number (CKANT in original schema)
     _ckpros: int # CK Percentage (CKPROS in original schema)
+    _certant: int # CERT number (CERTANT in original schema)
+    _certpros: int # CERT Percentage (CERTPROS in original schema)
 
     def __init__(self, reg_nr: str, farens_reg_nr: Union[str, None], morfars_reg_nr: Union[str, None]
 , fodt: Union[date, None], fodt_raw: Union[str, None], kjonn_id: int, oppdateringsdato: Union[date, None], oppdateringsdato_raw: Union[str, None]
@@ -34,7 +36,7 @@ class Utstillingsamleres:
 , premieant2: int, premiepros2: int, premieant3: int
 , premiepros3: int, kibant: int, kibpros: int
 , hpant: int, hppros: int, ckant: int
-, ckpros: int) -> None:
+, ckpros: int, certant: int, certpros: int) -> None:
         self._reg_nr = reg_nr
         self._farens_reg_nr = farens_reg_nr
         self._morfars_reg_nr = morfars_reg_nr
@@ -56,6 +58,8 @@ class Utstillingsamleres:
         self._hppros = hppros
         self._ckant = ckant
         self._ckpros = ckpros
+        self._certant = certant
+        self._certpros = certpros
 
     @classmethod
     def from_bytes(cls, content: bytes):
@@ -182,6 +186,18 @@ class Utstillingsamleres:
         # Remove used data from next entries
         sub_content = sub_content[2:]
 
+        # Parse the CERTANT property
+        certant = struct.unpack('H', sub_content[:2])[0] # CERTANT (CERT number is a 2 byte integer)
+        certant = None if certant == 32768 else certant # Set to python None if value indicates null
+        # Remove used data from next entries
+        sub_content = sub_content[2:]
+
+        # Parse the CERTPROS property
+        certpros = struct.unpack('H', sub_content[:2])[0] # CERTPROS (CERT Percentage is a 2 byte integer)
+        certpros = None if certpros == 32768 else certpros # Set to python None if value indicates null
+        # Remove used data from next entries
+        sub_content = sub_content[2:]
+
         return cls(reg_nr=reg_nr,
                    farens_reg_nr=farens_reg_nr,
                    morfars_reg_nr=morfars_reg_nr,
@@ -202,7 +218,9 @@ class Utstillingsamleres:
                    hpant=hpant,
                    hppros=hppros,
                    ckant=ckant,
-                   ckpros=ckpros)
+                   ckpros=ckpros,
+                   certant=certant,
+                   certpros=certpros)
 
     @property
     def reg_nr(self) -> str:
@@ -297,6 +315,14 @@ class Utstillingsamleres:
         return self._ckpros
 
     @property
+    def certant(self) -> int:
+        return self._certant
+
+    @property
+    def certpros(self) -> int:
+        return self._certpros
+
+    @property
     def native(self) -> dict:
         """Method converts class instance to native python classes for serialization purposes"""
 
@@ -322,6 +348,8 @@ class Utstillingsamleres:
             'hppros': self.hppros,
             'ckant': self.ckant,
             'ckpros': self.ckpros,
+            'certant': self.certant,
+            'certpros': self.certpros,
         }
 
         return obj_dict
