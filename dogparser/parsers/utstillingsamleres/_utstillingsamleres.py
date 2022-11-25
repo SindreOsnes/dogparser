@@ -21,12 +21,14 @@ class Utstillingsamleres:
     _premiepros2: int # 2nd place percentage (2PREMIEPROS in original schema)
     _premieant3: int # Number of times placed 3rd (3PREMIEANT in original schema)
     _premiepros3: int # 3rd place percentage (3PREMIEPROS in original schema)
+    _kibant: int # KIB number (KIBANT in original schema)
+    _kibpros: int # KIB Percentage (KIBPROS in original schema)
 
     def __init__(self, reg_nr: str, farens_reg_nr: Union[str, None], morfars_reg_nr: Union[str, None]
 , fodt: Union[date, None], fodt_raw: Union[str, None], kjonn_id: int, oppdateringsdato: Union[date, None], oppdateringsdato_raw: Union[str, None]
 , antgangutstilt: int, premieant1: int, premiepros1: int
 , premieant2: int, premiepros2: int, premieant3: int
-, premiepros3: int) -> None:
+, premiepros3: int, kibant: int, kibpros: int) -> None:
         self._reg_nr = reg_nr
         self._farens_reg_nr = farens_reg_nr
         self._morfars_reg_nr = morfars_reg_nr
@@ -42,6 +44,8 @@ class Utstillingsamleres:
         self._premiepros2 = premiepros2
         self._premieant3 = premieant3
         self._premiepros3 = premiepros3
+        self._kibant = kibant
+        self._kibpros = kibpros
 
     @classmethod
     def from_bytes(cls, content: bytes):
@@ -132,6 +136,18 @@ class Utstillingsamleres:
         # Remove used data from next entries
         sub_content = sub_content[2:]
 
+        # Parse the KIBANT property
+        kibant = struct.unpack('H', sub_content[:2])[0] # KIBANT (KIB number is a 2 byte integer)
+        kibant = None if kibant == 32768 else kibant # Set to python None if value indicates null
+        # Remove used data from next entries
+        sub_content = sub_content[2:]
+
+        # Parse the KIBPROS property
+        kibpros = struct.unpack('H', sub_content[:2])[0] # KIBPROS (KIB Percentage is a 2 byte integer)
+        kibpros = None if kibpros == 32768 else kibpros # Set to python None if value indicates null
+        # Remove used data from next entries
+        sub_content = sub_content[2:]
+
         return cls(reg_nr=reg_nr,
                    farens_reg_nr=farens_reg_nr,
                    morfars_reg_nr=morfars_reg_nr,
@@ -146,7 +162,9 @@ class Utstillingsamleres:
                    premieant2=premieant2,
                    premiepros2=premiepros2,
                    premieant3=premieant3,
-                   premiepros3=premiepros3)
+                   premiepros3=premiepros3,
+                   kibant=kibant,
+                   kibpros=kibpros)
 
     @property
     def reg_nr(self) -> str:
@@ -217,6 +235,14 @@ class Utstillingsamleres:
         return self._premiepros3
 
     @property
+    def kibant(self) -> int:
+        return self._kibant
+
+    @property
+    def kibpros(self) -> int:
+        return self._kibpros
+
+    @property
     def native(self) -> dict:
         """Method converts class instance to native python classes for serialization purposes"""
 
@@ -236,6 +262,8 @@ class Utstillingsamleres:
             'premiepros2': self.premiepros2,
             'premieant3': self.premieant3,
             'premiepros3': self.premiepros3,
+            'kibant': self.kibant,
+            'kibpros': self.kibpros,
         }
 
         return obj_dict
