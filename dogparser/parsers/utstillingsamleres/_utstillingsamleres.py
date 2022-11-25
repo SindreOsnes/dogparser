@@ -14,9 +14,11 @@ class Utstillingsamleres:
     _kjonn_id: int # Sex of dog (KJØNN in original schema)
     _oppdateringsdato: Union[date, None] # Update date (OPPDATERINGSDATO in original schema)
     _oppdateringsdato_raw: Union[str, None] # Update date raw value (OPPDATERINGSDATO in original schema)
+    _antgangutstilt: int # Number of times displayed (ANTGANGUTSTILT in original schema)
 
     def __init__(self, reg_nr: str, farens_reg_nr: Union[str, None], morfars_reg_nr: Union[str, None]
-, fodt: Union[date, None], fodt_raw: Union[str, None], kjonn_id: int, oppdateringsdato: Union[date, None], oppdateringsdato_raw: Union[str, None]) -> None:
+, fodt: Union[date, None], fodt_raw: Union[str, None], kjonn_id: int, oppdateringsdato: Union[date, None], oppdateringsdato_raw: Union[str, None]
+, antgangutstilt: int) -> None:
         self._reg_nr = reg_nr
         self._farens_reg_nr = farens_reg_nr
         self._morfars_reg_nr = morfars_reg_nr
@@ -25,6 +27,7 @@ class Utstillingsamleres:
         self._kjonn_id = kjonn_id
         self._oppdateringsdato = oppdateringsdato
         self._oppdateringsdato_raw = oppdateringsdato_raw
+        self._antgangutstilt = antgangutstilt
 
     @classmethod
     def from_bytes(cls, content: bytes):
@@ -74,8 +77,10 @@ class Utstillingsamleres:
         sub_content = sub_content[6:]
 
         # Parse the ANTGANGUTSTILT property
-        ANTGANGUTSTILT = struct.unpack('H', sub_content[:2])[0]
-        ANTGANGUTSTILT = None if ANTGANGUTSTILT == 32768 else ANTGANGUTSTILT
+        antgangutstilt = struct.unpack('H', sub_content[:2])[0] # ANTGANGUTSTILT (Number of times displayed is a 2 byte integer)
+        antgangutstilt = None if antgangutstilt == 32768 else antgangutstilt # Set to python None if value indicates null
+        # Remove used data from next entries
+        sub_content = sub_content[2:]
 
         return cls(reg_nr=reg_nr,
                    farens_reg_nr=farens_reg_nr,
@@ -84,7 +89,8 @@ class Utstillingsamleres:
                    fodt_raw=fodt_raw,
                    kjonn_id=kjonn_id,
                    oppdateringsdato=oppdateringsdato,
-                   oppdateringsdato_raw=oppdateringsdato_raw)
+                   oppdateringsdato_raw=oppdateringsdato_raw,
+                   antgangutstilt=antgangutstilt)
 
     @property
     def reg_nr(self) -> str:
@@ -127,6 +133,10 @@ class Utstillingsamleres:
         return None if not self._oppdateringsdato_raw else self._oppdateringsdato_raw
 
     @property
+    def antgangutstilt(self) -> int:
+        return self._antgangutstilt
+
+    @property
     def native(self) -> dict:
         """Method converts class instance to native python classes for serialization purposes"""
 
@@ -139,6 +149,7 @@ class Utstillingsamleres:
             'kjonn_id': self.kjonn_id,
             'oppdateringsdato': self.oppdateringsdato_str,
             'oppdateringsdato_raw': self.oppdateringsdato_raw,
+            'antgangutstilt': self.antgangutstilt,
         }
 
         return obj_dict
