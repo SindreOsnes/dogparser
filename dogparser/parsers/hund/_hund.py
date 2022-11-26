@@ -18,6 +18,8 @@ class Hund:
     _morens_reg_nr: str # Mothers registration number (MORENS REG.NR in original schema)
     _mor: str # Mothers name (MOR in original schema)
 
+    _mer: Union[str, None] # Awards (MER in original schema)
+
     # Enum ids
     _fd_land_id: int # Birth country (FD-LAND in original schema)
     _kjonn_id: int # Sex (KJØNN in original schema)
@@ -52,7 +54,8 @@ class Hund:
                  fodt: Union[date, None] = None, fodt_raw: Union[str, None] = None, kullnr: Union[str, None] = None,
                  kennel: Union[str, None] = None, farge: Union[str, None] = None,
                  farens_reg_nr: Union[str, None] = None, far: Union[str, None] = None,
-                 morens_reg_nr: Union[str, None] = None, mor: Union[str, None] = None,) -> None:
+                 morens_reg_nr: Union[str, None] = None, mor: Union[str, None] = None,
+                 mer: Union[str, None] = None) -> None:
         self._reg_nr = reg_nr
         self._navn = navn
         self._fodt = fodt
@@ -86,6 +89,7 @@ class Hund:
         self._far = far
         self._morens_reg_nr = morens_reg_nr
         self._mor = mor
+        self._mer = mer
     
     @classmethod
     def from_bytes(cls, content: bytes):
@@ -213,8 +217,12 @@ class Hund:
         sub_content = sub_content[1:] # 116 bytes remaining
         test2_id = sub_content[0] # TEST2 index
 
-        # Eliminate the already used data and set the next property (134-149 unused)
-        sub_content = content[150:] # 100 bytes remaining
+        # Eliminate the already used data and set the next property
+        sub_content = sub_content[1:] # 115 bytes remaining
+        mer = graceful_conversion(sub_content[:15]) # Mer (Awards is a string capped at 38 characters)
+
+        # Eliminate the already used data and set the next property
+        sub_content = sub_content[15:] # 100 bytes remaining
         farens_reg_nr = graceful_conversion(sub_content[:12]) # FARENS REG.NR (registration number is a string capped at 12 characters)
 
         # Eliminate the already used data and set the next property
@@ -263,6 +271,7 @@ class Hund:
             far=far,
             morens_reg_nr=morens_reg_nr,
             mor=mor,
+            mer=mer,
             )
     
     @property
@@ -384,6 +393,10 @@ class Hund:
     @property
     def test2_id(self) -> int:
         return self._test2_id
+
+    @property
+    def mer(self) -> Union[str, None]:
+        return None if not self._mer else self._mer
     
     @property
     def farens_reg_nr(self) -> Union[str, None]:
@@ -439,6 +452,7 @@ class Hund:
             'far': self.far,
             'morens_reg_nr': self.morens_reg_nr,
             'mor': self.mor,
+            'mer': self.mer,
         }
 
         return obj_dict
