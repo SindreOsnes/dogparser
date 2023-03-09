@@ -44,6 +44,7 @@ def parse_schema(source_definition: str, destination_folder: str):
     
     # Strip the extraneous data and split into elements
     stripped_schema_data = schema_data[schema_data.index(b'TOM1')-1:]
+    print(stripped_schema_data)
     schema_split = stripped_schema_data.split(b'\x00')
     columns, _ = extract_values(schema_split, 0, schema_data[schema_data.index(b'TOM1')-1])
     print(columns)
@@ -56,7 +57,7 @@ def parse_schema(source_definition: str, destination_folder: str):
         (b'kj\x9bnn', 'KJONN.json'),# Sex
         (b'k\x86ret', 'KAARET.json'), # K
         (b'Meritter', 'MERITTER.json'), # M
-        (b'hd', 'MERITTER.json'), # M
+        (b'hd', 'HD.json'), # M
     ]
 
     for target, file in enums:
