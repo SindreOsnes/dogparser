@@ -77,5 +77,5 @@ def parse_schema(source_definition: str, destination_folder: str):
         # Get the enumerator
         enum, schema_split = extract_enum(schema_split, target)
 
-        with open(os.path.join(destination_folder, file), 'w') as f:
+        with open(os.path.join(destination_folder, file), 'w', encoding='utf8') as f:
             json.dump(enum, f, ensure_ascii=False, indent=True)
