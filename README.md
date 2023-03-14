@@ -15,4 +15,5 @@
     dog "SIEGERVINNER2" "C:\Users\Sindre Osnes\Downloads\Hunder\Hunder060822\DEASE453\Hunder\SIEGHAAB" "C:\Users\Sindre Osnes\Desktop\Hunder\CLI_PARSE"
     dog "KULL" "C:\Users\Sindre Osnes\Downloads\Hunder\Hunder060822\DEASE453\Hunder\KULLHAAE" "C:\Users\Sindre Osnes\Desktop\Hunder\CLI_PARSE"
     dog "HDSTAT" "C:\Users\Sindre Osnes\Downloads\Hunder\Hunder060822\DEASE453\Hunder\HDSTHAAE" "C:\Users\Sindre Osnes\Desktop\Hunder\CLI_PARSE"
+    dog "UTSTSTAT" "C:\Users\Sindre Osnes\Downloads\Hunder\Hunder060822\DEASE453\Hunder\UTSTHAAB" "C:\Users\Sindre Osnes\Desktop\Hunder\CLI_PARSE"
 ```

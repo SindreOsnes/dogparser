@@ -1,6 +1,6 @@
 import argparse
 import os
-from dogparser.parsers import hund, eier, innavl, oppdretter, tyskull, utstillingsamleres, poststed, siegervinner, kull, hdstat
+from dogparser.parsers import hund, eier, innavl, oppdretter, tyskull, utstillingsamleres, poststed, siegervinner, kull, hdstat, utststat
 
 
 def parse():
@@ -50,5 +50,8 @@ def parse():
 
     elif args.TABLE == 'HDSTAT':
         hdstat.parse(args.SOURCE_FILE, os.path.join(args.DESTINATION_FOLDER, args.TABLE))
+
+    elif args.TABLE == 'UTSTSTAT':
+        utststat.parse(args.SOURCE_FILE, os.path.join(args.DESTINATION_FOLDER, args.TABLE))
 
     print('Hello World')
