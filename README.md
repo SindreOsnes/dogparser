@@ -17,4 +17,5 @@
     dog "HDSTAT" "C:\Users\Sindre Osnes\Downloads\Hunder\Hunder060822\DEASE453\Hunder\HDSTHAAE" "C:\Users\Sindre Osnes\Desktop\Hunder\CLI_PARSE"
     dog "UTSTSTAT" "C:\Users\Sindre Osnes\Downloads\Hunder\Hunder060822\DEASE453\Hunder\UTSTHAAB" "C:\Users\Sindre Osnes\Desktop\Hunder\CLI_PARSE"
     dog "KÅRINGER" "C:\Users\Sindre Osnes\Downloads\Hunder\Hunder060822\DEASE453\Hunder\KRINHAAB" "C:\Users\Sindre Osnes\Desktop\Hunder\CLI_PARSE"
+    dog "NV" "C:\Users\Sindre Osnes\Downloads\Hunder\Hunder060822\DEASE453\Hunder\NVAAHAAA" "C:\Users\Sindre Osnes\Desktop\Hunder\CLI_PARSE"
 ```
