@@ -1,4 +1,5 @@
-from typing import List, Tuple
+import struct
+from typing import List, Tuple, Union
 
 from ._conversion import graceful_conversion
 
@@ -20,3 +21,9 @@ def extract_values(elements: List[bytes], idx: int, count: int)  -> Tuple[List[s
     enum = [graceful_conversion(x) for x in query]
 
     return enum, elements[idx+count:]
+
+def extract_decimal(data: bytes) -> Union[float, None]:
+    if data == b'\x00\x00\x00\x80':
+        return None
+    else:
+        return str(struct.unpack('f', data)[0])
