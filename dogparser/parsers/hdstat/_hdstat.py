@@ -9,8 +9,8 @@ class HDStat:
     _fodselsaar: Union[int, None] # Birth year (FØDSELSÅR in original schema)
     _navn: Union[str, None] # Name (NAVN in original schema)
     _kjonn_id: int # Sex of dog (KJØNN in original schema)
-    _antkull: int # Number of litters (ANTKULL in original schema)
-    _ant: int # Number of children (ANT in original schema)
+    _antkull: Union[int, None] # Number of litters (ANTKULL in original schema)
+    _ant: Union[int, None] # Number of children (ANT in original schema)
     _ro: int # RØ (RØ in original schema)
     _sistedato: Union[date, None] # Last child date (SISTEDATO in original schema)
     _sistedato_raw: Union[str, None] # Last child date raw value (SISTEDATO in original schema)
@@ -21,7 +21,7 @@ class HDStat:
     _hd: Union[int, None] # HD? (HD in original schema)
 
     def __init__(self, reg_nr: str, fodselsaar: Union[int, None], navn: Union[str, None]
-               , kjonn_id: int, antkull: int, ant: int
+               , kjonn_id: int, antkull: Union[int, None], ant: Union[int, None]
                , ro: int, sistedato: Union[date, None], sistedato_raw: Union[str, None], fri: Union[int, None]
                , svak: Union[int, None], midd: Union[int, None], sterk: Union[int, None]
                , hd: Union[int, None]) -> None:
@@ -72,11 +72,13 @@ class HDStat:
 
         # Parse the ANTKULL property
         antkull = struct.unpack('H', sub_content[:2])[0] # ANTKULL (Number of litters is a 2 byte integer)
+        antkull = None if antkull == 32768 else antkull # Set to python None if value indicates null
         # Remove used data from next entries
         sub_content = sub_content[2:]
 
         # Parse the ANT property
         ant = struct.unpack('H', sub_content[:2])[0] # ANT (Number of children is a 2 byte integer)
+        ant = None if ant == 32768 else ant # Set to python None if value indicates null
         # Remove used data from next entries
         sub_content = sub_content[2:]
 
@@ -156,12 +158,12 @@ class HDStat:
         return self._kjonn_id
 
     @property
-    def antkull(self) -> int:
-        return self._antkull
+    def antkull(self) -> Union[int, None]:
+        return None if not self._antkull else self._antkull
 
     @property
-    def ant(self) -> int:
-        return self._ant
+    def ant(self) -> Union[int, None]:
+        return None if not self._ant else self._ant
 
     @property
     def ro(self) -> int:
