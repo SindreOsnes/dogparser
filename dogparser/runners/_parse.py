@@ -12,7 +12,7 @@ def parse():
     args = argument_parser.parse_args()
 
     # Validate the inputs
-    if args.TABLE not in ['HUNDER', 'EIERE', 'INNAVL', 'OPPDRETTERE', 'TYSKULL', 'UTSTILLINGSAMLERES', 'POSTSTEDER', 'SIEGERVINNER', 'KULL', 'HDSTAT', 'SIEGERVINNER2']:
+    if args.TABLE not in ['HUNDER', 'EIERE', 'INNAVL', 'OPPDRETTERE', 'TYSKULL', 'UTSTILLINGSAMLERES', 'POSTSTEDER', 'SIEGERVINNER', 'KULL', 'HDSTAT', 'SIEGERVINNER2', 'UTSTSTAT']:
         raise AssertionError(f'Table {args.TABLE} is not valid')
 
     if not os.path.exists(args.SOURCE_FILE+'.DBM'):
