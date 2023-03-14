@@ -293,7 +293,7 @@ class UtStStat:
         return None if not self._antgangutstilt else self._antgangutstilt
 
     @property
-    def _1premieant(self) -> Union[int, None]:
+    def n1premieant(self) -> Union[int, None]:
         return None if not self._1premieant else self._1premieant
 
     @property
