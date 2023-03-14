@@ -7,7 +7,8 @@ from ...utils import graceful_conversion, date_conversion
 class UtStStat:
     _farens_reg_nr: str # Fathers registration number (FARENS REG.NR in original schema)
     _morfars_reg_nr: str # Grandfathers registration number (MORFARS REG.NR in original schema)
-    _oppdateringsdato: str # Update date (OPPDATERINGSDATO in original schema)
+    _oppdateringsdato: Union[date, None] # Update date (OPPDATERINGSDATO in original schema)
+    _oppdateringsdato_raw: Union[str, None] # Update date raw value (OPPDATERINGSDATO in original schema)
     _totantavkom: Union[int, None] # Number of children (TOTANTAVKOM in original schema)
     _antkull: Union[int, None] # Number of litters (ANTKULL in original schema)
     _antavkutstbar: Union[int, None] # Number of children displayable (ANTAVKUTSTBAR in original schema)
@@ -31,7 +32,7 @@ class UtStStat:
     _certant: Union[int, None] # CK (CERTANT in original schema)
     _certpros: Union[int, None] # CK (CERTPROS in original schema)
 
-    def __init__(self, farens_reg_nr: str, morfars_reg_nr: str, oppdateringsdato: str
+    def __init__(self, farens_reg_nr: str, morfars_reg_nr: str, oppdateringsdato: Union[date, None], oppdateringsdato_raw: Union[str, None]
                , totantavkom: Union[int, None], antkull: Union[int, None], antavkutstbar: Union[int, None]
                , antavkutstbarpros: Union[int, None], antkullutstbar: Union[int, None], antutstilt: Union[int, None]
                , antutstiltpros: Union[int, None], antgangutstilt: Union[int, None], n1premieant: Union[int, None]
@@ -43,6 +44,7 @@ class UtStStat:
         self._farens_reg_nr = farens_reg_nr
         self._morfars_reg_nr = morfars_reg_nr
         self._oppdateringsdato = oppdateringsdato
+        self._oppdateringsdato_raw = oppdateringsdato_raw
         self._totantavkom = totantavkom
         self._antkull = antkull
         self._antavkutstbar = antavkutstbar
@@ -86,8 +88,12 @@ class UtStStat:
         sub_content = sub_content[12:]
 
         # Parse the OPPDATERINGSDATO property
-        oppdateringsdato = graceful_conversion(sub_content[:6]) # OPPDATERINGSDATO (Update date is a string capped at 6 characters)
-        # Remove used data from next entries
+        oppdateringsdato = None
+        oppdateringsdato_raw = graceful_conversion(sub_content[:6])
+        try:
+            oppdateringsdato = date_conversion(sub_content[:6]) # OPPDATERINGSDATO (Update date is represented by a 6 digit numerical string)
+        except ValueError as e:
+            print(e)        # Remove used data from next entries
         sub_content = sub_content[6:]
 
         # Parse the TOTANTAVKOM property
@@ -225,6 +231,7 @@ class UtStStat:
         return cls(farens_reg_nr=farens_reg_nr,
                    morfars_reg_nr=morfars_reg_nr,
                    oppdateringsdato=oppdateringsdato,
+                   oppdateringsdato_raw=oppdateringsdato_raw,
                    totantavkom=totantavkom,
                    antkull=antkull,
                    antavkutstbar=antavkutstbar,
@@ -257,8 +264,16 @@ class UtStStat:
         return self._morfars_reg_nr
 
     @property
-    def oppdateringsdato(self) -> str:
-        return self._oppdateringsdato
+    def oppdateringsdato(self) -> Union[date, None]:
+        return None if not self._oppdateringsdato else self._oppdateringsdato
+
+    @property
+    def oppdateringsdato_str(self) -> Union[str, None]:
+        return None if not self.oppdateringsdato else self.oppdateringsdato.isoformat()
+
+    @property
+    def oppdateringsdato_raw(self) -> Union[str, None]:
+        return None if not self._oppdateringsdato_raw else self._oppdateringsdato_raw
 
     @property
     def totantavkom(self) -> Union[int, None]:
