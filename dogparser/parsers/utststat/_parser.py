@@ -14,7 +14,7 @@ def parse(source_definition: str, destination_folder: str):
 
     utststat_list = []
 
-    element_len = 180
+    element_len = 78
 
     with open(data_file, 'rb') as f:
         i = 0
