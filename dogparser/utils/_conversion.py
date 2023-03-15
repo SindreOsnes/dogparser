@@ -51,7 +51,9 @@ def base_conversions(input_element: bytes) -> bytes:
     data_out = data_out.replace(b'\x90', b'?x90?') # HUNDER (reg_nr: LOF536495, value(navn): SCOTT D. VAL DE LA HOU?x90?E)
     data_out = data_out.replace(b'\x91', b'?x91?') # æ | HUNDER UTD(Færd.)
     data_out = data_out.replace(b'\x92', b'?x92?') # Æ | HUNDER HEM(BÆRER)
+    data_out = data_out.replace(b'\x93', b'?x93?') # KARINGSBESKRIVELSER (SZ1829792)
     data_out = data_out.replace(b'\x94', b'?x94?') # ö | HUNDER BRUKS(Godkj Mögl)
+    data_out = data_out.replace(b'\x96', b'?x96?') # KARINGSBESKRIVELSER (10644/91)
     data_out = data_out.replace(b'\x99', b'?x99?') # HUNDER (reg_nr: SZ2074460, value(navn): LEILA V.D. R?x99?DERRBURG)
     data_out = data_out.replace(b'\x9a', b'?x9a?') # HUNDER (reg_nr: SZ2094024, value(navn): NOLA V.D. B?x9?aLTENSTIEGE)
     data_out = data_out.replace(b'\x9b', b'?x9b?') # ø | HUNDER HD(Død)
@@ -64,6 +66,7 @@ def base_conversions(input_element: bytes) -> bytes:
     data_out = data_out.replace(b'\xe1', b'?xe1?') # HUNDER (reg_nr: SZ2162887, value(navn): LUNA V. SCHLO?xe1?G?x8e??xe1?CHEN)
     data_out = data_out.replace(b'\xe4', b'?xe4?') # EIERE (reg_nr: SZ2169917, value(sted): Kxxxxx xxxx, x?xe4?xxx xxxx) --
     data_out = data_out.replace(b'\xf9', b'?xf9?') # HUNDER (reg_nr: 57747/18, value(kennnel): HEIAG?xf9?RDEN, AV) x8f collision
+    data_out = data_out.replace(b'\xfe', b'?xfe?') # KARINGSBESKRIVELSER (SZ1583179)
     data_out = data_out.replace(b'\xff', b'?xff?') # HUNDER (reg_nr: SZ1915923, value(navn): OLDO V. SCHLO?xe1? BIRKENSTEIN?xff?)
     
     return data_out
