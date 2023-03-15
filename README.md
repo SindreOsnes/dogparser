@@ -22,4 +22,5 @@
     dog "KÅRINGSBESKRIVELSER" "C:\Users\Sindre Osnes\Downloads\Hunder\Hunder060822\DEASE453\Hunder\KRINHAAA" "C:\Users\Sindre Osnes\Desktop\Hunder\CLI_PARSE"
     dog "SYKDOMMER" "C:\Users\Sindre Osnes\Downloads\Hunder\Hunder060822\DEASE453\Hunder\SYKDHAAA" "C:\Users\Sindre Osnes\Desktop\Hunder\CLI_PARSE"
     dog "HDSTATFARMORFAR" "C:\Users\Sindre Osnes\Downloads\Hunder\Hunder060822\DEASE453\Hunder\HDSTHAAA" "C:\Users\Sindre Osnes\Desktop\Hunder\CLI_PARSE"
+    dog "HDSTATMORFARFAR" "C:\Users\Sindre Osnes\Downloads\Hunder\Hunder060822\DEASE453\Hunder\HDSTHAAB" "C:\Users\Sindre Osnes\Desktop\Hunder\CLI_PARSE"
 ```
